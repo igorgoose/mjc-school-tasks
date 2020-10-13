@@ -1,0 +1,32 @@
+
+plugins{
+
+    id 'java'
+    id 'application'
+
+}
+
+mainClassName = 'com.schepov.mjc.one.api.App'
+
+dependencies {
+
+    compile project(':core')
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.runtime.files.collect { "lib/$it.name" }.join(' '),
+                'Main-Class': 'com.schepov.mjc.one.api.App',
+                'Implementation-Version': project.version
+        )
+    }
+
+    from(configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }) {}
+}
+
