@@ -1,0 +1,4 @@
+rootProject.name = 'GiftCertificates'
+include 'core'
+include 'persistence'
+

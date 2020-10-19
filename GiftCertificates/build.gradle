@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.epam.esm.schepov'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+
+}
