@@ -2,6 +2,7 @@ package com.epam.esm.schepov.core.entity;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,7 +17,7 @@ public class GiftCertificate implements Serializable {
     private Date lastUpdateDate;
     private int duration;
 
-    private List<Tag> tags;
+    private List<Tag> tags = new LinkedList<>();
 
     public GiftCertificate() {
 
@@ -31,7 +32,7 @@ public class GiftCertificate implements Serializable {
     }
 
     public GiftCertificate(int id, String name, String description, float price,
-                           Date createDate, Date lastUpdateDate, int duration, List<Tag> tags) {
+                           Date createDate, Date lastUpdateDate, int duration) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -39,7 +40,6 @@ public class GiftCertificate implements Serializable {
         this.createDate = createDate;
         this.lastUpdateDate = lastUpdateDate;
         this.duration = duration;
-        this.tags = tags;
     }
 
     public int getId() {
@@ -109,12 +109,11 @@ public class GiftCertificate implements Serializable {
                 Objects.equals(name, that.name) &&
                 Objects.equals(description, that.description) &&
                 Objects.equals(createDate, that.createDate) &&
-                Objects.equals(lastUpdateDate, that.lastUpdateDate) &&
-                Objects.equals(tags, that.tags);
+                Objects.equals(lastUpdateDate, that.lastUpdateDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, price, createDate, lastUpdateDate, duration, tags);
+        return Objects.hash(id, name, description, price, createDate, lastUpdateDate, duration);
     }
 }
