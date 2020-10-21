@@ -10,9 +10,10 @@ repositories {
 }
 
 dependencies {
+    //implementation 'org.junit.jupiter:junit-jupiter:5.4.2'
 
     // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
-    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.7.0'
     // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
     compile group: 'org.springframework', name: 'spring-jdbc', version: '5.2.9.RELEASE'
     // https://mvnrepository.com/artifact/org.springframework/spring-core
@@ -26,6 +27,13 @@ dependencies {
     // https://mvnrepository.com/artifact/mysql/mysql-connector-java
     compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
 
+    // https://mvnrepository.com/artifact/com.h2database/h2
+    testCompile group: 'com.h2database', name: 'h2', version: '1.4.200'
+
     compile project(':core')
 
+}
+
+test{
+    useJUnitPlatform()
 }

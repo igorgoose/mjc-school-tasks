@@ -14,9 +14,9 @@ import javax.sql.DataSource;
 @Configuration
 public class DataSourceConfig {
 
-    @Profile("production")
+    @Profile("development")
     @Bean
-    public DataSource dataSource(){
+    public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/gift_certificates");
@@ -27,14 +27,13 @@ public class DataSourceConfig {
         return dataSource;
     }
 
-    @Profile("development")
+    @Profile("test")
     @Bean
-    public DataSource embeddedDataSource(){
-        //todo create scripts
+    public DataSource embeddedDataSource() {
         return new EmbeddedDatabaseBuilder()
                 .setType(EmbeddedDatabaseType.H2)
-                .addScript("classpath:schema.sql")
-                .addScript("classpath:test-data.sql")
+                .addScript("classpath:create_tables.sql")
+                .addScript("classpath:initialize_data.sql")
                 .build();
     }
 

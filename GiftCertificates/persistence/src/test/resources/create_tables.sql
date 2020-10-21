@@ -1,6 +1,6 @@
-create database gift_certificates;
-
-use gift_certificates;
+drop table if exists tags;
+drop table if exists certificates;
+drop table if exists certificate_tags;
 
 create table tags(
 	id int primary key auto_increment,
