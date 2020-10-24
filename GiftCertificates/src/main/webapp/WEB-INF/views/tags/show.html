@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${tag.getName()}"></title>
+</head>
+<body>
+<h1 th:text="${tag.getName()}"></h1>
+<p>Related certificates</p>
+<ul th:each="certificate : ${tag.getGiftCertificates()}">
+    <li>
+        <a th:href="@{/certificates/{id}(id = ${certificate.getId()})}"
+           th:text="${certificate.getName()}"></a>
+    </li>
+</ul>
+<a th:href="@{/}">Home</a>
+</body>
+</html>

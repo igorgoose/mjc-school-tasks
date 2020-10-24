@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Certificates</title>
+</head>
+<body>
+    <h1>Certificates</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Creation date</th>
+                <th>Duration</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="certificate : ${certificates}">
+                <td>
+                    <a th:href="@{certificates/{id}(id = ${certificate.getId()})}"
+                       th:text="${certificate.getName()}"></a>
+                </td>
+                <td th:text="${certificate.getPrice()}"></td>
+                <td th:text="${certificate.getCreateDate()}"></td>
+                <td th:text="${certificate.getDuration()}"></td>
+            </tr>
+        </tbody>
+    </table>
+    <a th:href="@{/}" th:text="Home"></a>
+</body>
+</html>

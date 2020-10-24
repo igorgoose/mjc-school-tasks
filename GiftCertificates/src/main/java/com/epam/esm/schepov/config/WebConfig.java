@@ -15,13 +15,12 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan("com.epam.esm.schepov")
-//@ComponentScans({
-//        @ComponentScan("com.epam.esm.schepov"),
-////        @ComponentScan("com.epam.esm.schepov.persistence"),
-////        @ComponentScan("com.epam.esm.schepov.service"),
-////        @ComponentScan("com.epam.esm.schepov.core")
-//})
+@ComponentScans({
+        @ComponentScan("com.epam.esm.schepov"),
+        @ComponentScan("com.epam.esm.schepov.persistence"),
+        @ComponentScan("com.epam.esm.schepov.service"),
+        @ComponentScan("com.epam.esm.schepov.core")
+})
 public class WebConfig implements WebMvcConfigurer {
 
     private final ApplicationContext applicationContext;

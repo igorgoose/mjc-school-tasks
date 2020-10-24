@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tags</title>
+</head>
+<body>
+<h1>Tags</h1>
+<div>
+    <ul th:each="tag : ${tags}">
+        <li>
+            <a th:href="@{/tags/{id}(id = ${tag.getId()})}" th:text="${tag.getName()}"></a>
+        </li>
+    </ul>
+</div>
+<a th:href="@{/}">Home</a>
+</body>
+</html>

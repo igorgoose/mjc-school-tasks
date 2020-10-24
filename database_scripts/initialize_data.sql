@@ -1,19 +1,19 @@
-insert into tags(name) values ("extreme");
-insert into tags(name) values ("sport");
-insert into tags(name) values ("spa");
-insert into tags(name) values ("relax");
+insert into tags(name) values ("Extreme");
+insert into tags(name) values ("Sport");
+insert into tags(name) values ("Spa");
+insert into tags(name) values ("Relax");
 
 insert into certificates(name, price, create_date, last_update_date, duration)
-values ("parachute jump", 50.00, current_timestamp(), current_timestamp(), 7);
+values ("Parachute jump", 50.00, current_timestamp(), current_timestamp(), 7);
 
 insert into certificates(name, price, create_date, last_update_date, duration)
-values ("yoga class", 20.00, current_timestamp(), current_timestamp(), 14);
+values ("Yoga class", 20.00, current_timestamp(), current_timestamp(), 14);
 
 insert into certificates(name, price, create_date, last_update_date, duration)
-values ("helicopter flight", 50.00, current_timestamp(), current_timestamp(), 30);
+values ("Helicopter flight", 50.00, current_timestamp(), current_timestamp(), 30);
 
 insert into certificates(name, price, create_date, last_update_date, duration)
-values ("sauna", 50.00, current_timestamp(), current_timestamp(), 7);
+values ("Sauna", 50.00, current_timestamp(), current_timestamp(), 7);
 
 insert into certificate_tags(tag_id, certificate_id)
 values (1, 1);
