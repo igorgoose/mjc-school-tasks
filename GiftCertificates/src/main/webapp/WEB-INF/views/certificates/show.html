@@ -5,23 +5,23 @@
     <title th:text="${certificate.getName()}"></title>
 </head>
 <body>
-<h1>Certificate info</h1>
+<h1 th:text="#{view.certificates.certificate_info}"></h1>
 <table>
     <thead>
     <tr>
-        <th>Name</th>
-        <th>Price</th>
-        <th>Creation date</th>
-        <th>Last update date</th>
-        <th>Duration</th>
+        <th th:text="#{certificate.name}"></th>
+        <th th:text="#{certificate.price}"></th>
+        <th th:text="#{certificate.creation_date}"></th>
+        <th th:text="#{certificate.latest_update_date}"></th>
+        <th th:text="#{certificate.duration}"></th>
     </tr>
     </thead>
     <tbody>
     <tr>
         <td th:text="${certificate.getName()}"></td>
         <td th:text="${certificate.getPrice()}"></td>
-        <td th:text="${certificate.getCreateDate()}"></td>
-        <td th:text="${certificate.getLastUpdateDate()}"></td>
+        <td th:text="${{certificate.getCreateDate()}}"></td>
+        <td th:text="${{certificate.getLastUpdateDate()}}"></td>
         <td th:text="${certificate.getDuration()}"></td>
     </tr>
     </tbody>

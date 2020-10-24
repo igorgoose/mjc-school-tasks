@@ -2,10 +2,10 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tags</title>
+    <title th:text="#{view.tags.tags}"></title>
 </head>
 <body>
-<h1>Tags</h1>
+<h1 th:text="#{view.tags.tags}"></h1>
 <div>
     <ul th:each="tag : ${tags}">
         <li>
@@ -13,6 +13,6 @@
         </li>
     </ul>
 </div>
-<a th:href="@{/}">Home</a>
+<a th:href="@{/}" th:text="#{view.home}"></a>
 </body>
 </html>

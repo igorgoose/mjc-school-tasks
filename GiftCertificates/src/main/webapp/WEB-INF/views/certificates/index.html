@@ -2,17 +2,17 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Certificates</title>
+    <title th:text="#{view.certificates.certificates}">Certificates</title>
 </head>
 <body>
-    <h1>Certificates</h1>
+    <h1 th:text="#{view.certificates.certificates_info}"></h1>
     <table>
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Price</th>
-                <th>Creation date</th>
-                <th>Duration</th>
+                <th th:text="#{certificate.name}"></th>
+                <th th:text="#{certificate.price}"></th>
+                <th th:text="#{certificate.creation_date}"></th>
+                <th th:text="#{certificate.duration}"></th>
             </tr>
         </thead>
         <tbody>
@@ -22,7 +22,7 @@
                        th:text="${certificate.getName()}"></a>
                 </td>
                 <td th:text="${certificate.getPrice()}"></td>
-                <td th:text="${certificate.getCreateDate()}"></td>
+                <td th:text="${{certificate.getCreateDate()}}"></td>
                 <td th:text="${certificate.getDuration()}"></td>
             </tr>
         </tbody>

@@ -2,11 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Welcome</title>
+    <title th:text="#{index.welcome}"></title>
 </head>
 <body>
-    <h1>Welcome</h1>
-    <a th:href="@{/tags}">Manage Tags</a>
-    <a th:href="@{/certificates}">Manage Certificates</a>
+    <h1 th:text="#{index.welcome}"></h1>
+    <a th:href="@{/tags}" th:text="#{index.manage_tags}"></a>
+    <a th:href="@{/certificates}" th:text="#{index.manage_certificates}"></a>
 </body>
 </html>

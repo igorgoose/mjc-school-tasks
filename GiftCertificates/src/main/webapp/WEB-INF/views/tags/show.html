@@ -6,13 +6,13 @@
 </head>
 <body>
 <h1 th:text="${tag.getName()}"></h1>
-<p>Related certificates</p>
+<p th:text="#{view.tags.related_certificates}"></p>
 <ul th:each="certificate : ${tag.getGiftCertificates()}">
     <li>
         <a th:href="@{/certificates/{id}(id = ${certificate.getId()})}"
            th:text="${certificate.getName()}"></a>
     </li>
 </ul>
-<a th:href="@{/}">Home</a>
+<a th:href="@{/}" th:text="#{view.home}"></a>
 </body>
 </html>
