@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="#{view.certificates.edit_certificate}"></title>
+</head>
+<body>
+<h1 th:text="#{view.certificates.edit_certificate}"></h1>
+<form th:method="POST" th:action="@{/certificates}" th:object="${certificate}">
+    <label for="name" th:text="#{view.certificates.enter_name}"></label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <br/>
+    <label for="description" th:text="#{view.certificates.enter_description}"></label>
+    <input type="text" th:field="*{description}" id="description"/>
+    <br/>
+    <label for="price" th:text="#{view.certificates.enter_price}"></label>
+    <input type="text" th:field="*{price}" id="price"/>
+    <br/>
+    <label for="duration" th:text="#{view.certificates.enter_duration}"></label>
+    <input type="text" th:field="*{duration}" id="duration"/>
+    <br/>
+    <input type="submit" th:value="#{view.update}">
+</form>
+<a th:href="@{/}" th:text="Home"></a>
+</body>
+</html>

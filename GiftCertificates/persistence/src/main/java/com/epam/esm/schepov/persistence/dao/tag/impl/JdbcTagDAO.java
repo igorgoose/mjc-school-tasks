@@ -56,6 +56,7 @@ public class JdbcTagDAO implements TagDAO {
 
     @Override
     public Tag getTagById(int id) {
+        //todo create custom exceptions
         return jdbcOperations.query(GET_TAG_BY_ID, this::mapResultSet, id)
                 .stream().findAny().orElseThrow(() -> new RuntimeException("empty"));
     }
@@ -89,15 +90,18 @@ public class JdbcTagDAO implements TagDAO {
 
     private Tag mapTag(ResultSet resultSet) throws SQLException {
         Tag tag = new Tag(resultSet.getInt(ID.getName()), resultSet.getString(NAME.getName()));
-        tag.getGiftCertificates().add(new GiftCertificate(
-                resultSet.getInt(CERTIFICATE_ID.getName()),
-                resultSet.getString(CERTIFICATE_NAME.getName()),
-                resultSet.getString(DESCRIPTION.getName()),
-                resultSet.getFloat(PRICE.getName()),
-                resultSet.getTimestamp(CREATE_DATE.getName()),
-                resultSet.getTimestamp(LAST_UPDATE_DATE.getName()),
-                resultSet.getInt(DURATION.getName())
-        ));
+        String certificateName = resultSet.getString(CERTIFICATE_NAME.getName());
+        if(certificateName != null) {
+            tag.getGiftCertificates().add(new GiftCertificate(
+                    resultSet.getInt(CERTIFICATE_ID.getName()),
+                    certificateName,
+                    resultSet.getString(DESCRIPTION.getName()),
+                    resultSet.getFloat(PRICE.getName()),
+                    resultSet.getTimestamp(CREATE_DATE.getName()),
+                    resultSet.getTimestamp(LAST_UPDATE_DATE.getName()),
+                    resultSet.getInt(DURATION.getName())
+            ));
+        }
         return tag;
     }
 

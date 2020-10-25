@@ -3,6 +3,7 @@ plugins {
     id 'war'
 }
 
+compileJava.options.encoding = 'UTF-8'
 group 'com.epam.esm.schepov'
 version '1.0-SNAPSHOT'
 

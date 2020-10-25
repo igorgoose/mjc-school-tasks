@@ -5,12 +5,10 @@ import com.epam.esm.schepov.service.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/tags")
+@RequestMapping(value = "/tags", produces = {"text/html; charset=UTF-8"})
 public class TagController {
 
     private final TagService tagService;
@@ -21,15 +19,33 @@ public class TagController {
     }
 
     @GetMapping
-    public String viewAllTags(Model model){
+    public String index(Model model){
         model.addAttribute("tags", tagService.getAllTags());
         return "tags/index";
     }
 
     @GetMapping("/{id}")
-    public String viewTag(@PathVariable("id") int id, Model model){
+    public String show(@PathVariable("id") int id, Model model){
         model.addAttribute("tag", tagService.getTagById(id));
         return "tags/show";
+    }
+
+    @GetMapping("/new")
+    public String newTag(@ModelAttribute("tag") Tag tag){
+        return "tags/new";
+    }
+
+    @PostMapping
+    public String create(@ModelAttribute("tag") Tag tag){
+        tagService.insertTag(tag);
+        return "redirect:/tags";
+    }
+
+
+    @DeleteMapping("/{id}")
+    public String delete(@PathVariable("id") int id){
+        tagService.deleteTagById(id);
+        return "redirect:/tags";
     }
 
 }

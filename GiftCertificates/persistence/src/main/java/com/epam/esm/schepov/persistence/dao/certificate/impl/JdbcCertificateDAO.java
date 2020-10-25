@@ -111,10 +111,11 @@ public class JdbcCertificateDAO implements CertificateDAO {
                 resultSet.getTimestamp(LAST_UPDATE_DATE.getName()),
                 resultSet.getInt(DURATION.getName())
         );
-        giftCertificate.getTags().add(new Tag(
-                resultSet.getInt(TAG_ID.getName()),
-                resultSet.getString(TAG_NAME.getName())
-        ));
+        int tagId = resultSet.getInt(TAG_ID.getName());
+        String tagName = resultSet.getString(TAG_NAME.getName());
+        if(tagName != null) {
+            giftCertificate.getTags().add(new Tag(tagId, tagName));
+        }
         return giftCertificate;
     }
 }

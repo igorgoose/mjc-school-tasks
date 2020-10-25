@@ -33,5 +33,11 @@
         </td>
     </tr>
 </table>
+<hr/>
+<form th:method="DELETE" th:action="@{/certificates/{id}(id=${certificate.getId()})}">
+    <input type="submit" th:value="#{view.delete}"/>
+</form>
+<a th:href="@{/certificates/edit}" th:text="#{view.edit}"></a>
+<a th:href="@{/}" th:text="#{view.home}"></a>
 </body>
 </html>

@@ -28,4 +28,15 @@ public class TagServiceImpl implements TagService {
     public Tag getTagById(int id) {
         return tagDAO.getTagById(id);
     }
+
+    @Override
+    public void deleteTagById(int id) {
+        tagDAO.deleteTag(id);
+    }
+
+    @Override
+    public void insertTag(Tag tag) {
+        tagDAO.insertTag(tag);
+    }
+
 }

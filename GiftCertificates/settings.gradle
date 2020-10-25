@@ -1,5 +1,5 @@
 rootProject.name = 'GiftCertificates'
-include 'core'
+include 'model'
 include 'persistence'
 include 'service'
 
