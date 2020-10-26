@@ -79,13 +79,18 @@ public class JdbcTagDAO implements TagDAO {
     }
 
     private Set<Tag> mapResultSet(ResultSet resultSet) throws SQLException {
-        Set<Tag> tempTags = new LinkedHashSet<>();
+        Set<Tag> tags = new LinkedHashSet<>();
         while (resultSet.next()) {
             Tag tag = mapTag(resultSet);
-            tempTags.remove(tag);
-            tempTags.add(tag);
+            for (Tag tagFromSet : tags) {
+                if (tagFromSet.equals(tag)) {
+                    tag.getGiftCertificates().addAll(tagFromSet.getGiftCertificates());
+                }
+            }
+            tags.remove(tag);
+            tags.add(tag);
         }
-        return tempTags;
+        return tags;
     }
 
     private Tag mapTag(ResultSet resultSet) throws SQLException {

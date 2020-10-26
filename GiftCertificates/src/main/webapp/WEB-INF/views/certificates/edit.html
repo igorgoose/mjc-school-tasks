@@ -18,7 +18,14 @@
     <br/>
     <label for="duration" th:text="#{view.certificates.enter_duration}"></label>
     <input type="text" th:field="*{duration}" id="duration"/>
-    <br/>
+    <p>
+        <label th:text="#{view.certificates.select_tags}" for="tag_select"></label>
+        <br/>
+        <select autofocus multiple name="selected_tags" id="tag_select">
+            <option th:each="tag : ${tags}" th:value="${tag.getId()}" th:text="${tag.getName()}"
+                    th:selected="${selectedTags.contains(tag)}"></option>
+        </select>
+    </p>
     <input type="submit" th:value="#{view.update}">
 </form>
 <a th:href="@{/}" th:text="Home"></a>

@@ -31,17 +31,23 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public void insertCertificate(GiftCertificate giftCertificate) {
+    public GiftCertificate insertCertificate(GiftCertificate giftCertificate) {
         //todo validation
         Date now = new Date();
         giftCertificate.setCreateDate(now);
         giftCertificate.setLastUpdateDate(now);
         certificateDAO.insertCertificate(giftCertificate);
+        return certificateDAO.getCertificateByName(giftCertificate.getName());
     }
 
     @Override
     public void deleteCertificate(int id) {
         certificateDAO.deleteCertificate(id);
+    }
+
+    @Override
+    public void updateCertificate(int id, GiftCertificate giftCertificate) {
+        certificateDAO.updateCertificate(id, giftCertificate);
     }
 
 }

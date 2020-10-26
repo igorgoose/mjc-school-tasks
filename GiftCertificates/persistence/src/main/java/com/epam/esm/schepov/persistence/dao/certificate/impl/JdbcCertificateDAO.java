@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -47,6 +48,11 @@ public class JdbcCertificateDAO implements CertificateDAO {
 
     private static final String DELETE_CERTIFICATE_QUERY =
             "delete from certificates where id = ?";
+
+    private static final String UPDATE_CERTIFICATE_QUERY =
+            "update certificates " +
+                    "set name = ?, description = ?, price = ?, last_update_date = ?, duration = ?" +
+                    "where id = ?";
 
     private final JdbcOperations jdbcOperations;
 
@@ -87,13 +93,29 @@ public class JdbcCertificateDAO implements CertificateDAO {
 
     @Override
     public void deleteCertificate(int id) {
-        jdbcOperations.update(DELETE_CERTIFICATE_QUERY);
+        jdbcOperations.update(DELETE_CERTIFICATE_QUERY, id);
+    }
+
+    @Override
+    public void updateCertificate(int id, GiftCertificate giftCertificate) {
+        jdbcOperations.update(UPDATE_CERTIFICATE_QUERY,
+                giftCertificate.getName(),
+                giftCertificate.getDescription(),
+                giftCertificate.getPrice(),
+                new Date(),
+                giftCertificate.getDuration(),
+                id);
     }
 
     private Set<GiftCertificate> mapResultSet(ResultSet resultSet) throws SQLException {
         Set<GiftCertificate> giftCertificates = new LinkedHashSet<>();
-        while(resultSet.next()){
+        while (resultSet.next()) {
             GiftCertificate giftCertificate = mapGiftCertificate(resultSet);
+            for (GiftCertificate certificateFromSet : giftCertificates) {
+                if (giftCertificate.equals(certificateFromSet)) {
+                    giftCertificate.getTags().addAll(certificateFromSet.getTags());
+                }
+            }
             giftCertificates.remove(giftCertificate);
             giftCertificates.add(giftCertificate);
         }
@@ -113,7 +135,7 @@ public class JdbcCertificateDAO implements CertificateDAO {
         );
         int tagId = resultSet.getInt(TAG_ID.getName());
         String tagName = resultSet.getString(TAG_NAME.getName());
-        if(tagName != null) {
+        if (tagName != null) {
             giftCertificate.getTags().add(new Tag(tagId, tagName));
         }
         return giftCertificate;

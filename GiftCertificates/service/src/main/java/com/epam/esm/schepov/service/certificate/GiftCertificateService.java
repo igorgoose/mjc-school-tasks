@@ -12,8 +12,10 @@ public interface GiftCertificateService {
     GiftCertificate getCertificateById(int id);
 
 
-    void insertCertificate(GiftCertificate giftCertificate);
+    GiftCertificate insertCertificate(GiftCertificate giftCertificate);
 
 
     void deleteCertificate(int id);
+
+    void updateCertificate(int id, GiftCertificate giftCertificate);
 }

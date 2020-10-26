@@ -2,8 +2,9 @@ package com.epam.esm.schepov.controller;
 
 import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.core.entity.Tag;
-import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
+import com.epam.esm.schepov.service.certificatetag.CertificateTagService;
+import com.epam.esm.schepov.service.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,10 +15,14 @@ import org.springframework.web.bind.annotation.*;
 public class CertificateController {
 
     private final GiftCertificateService giftCertificateService;
+    private final TagService tagService;
+    private final CertificateTagService certificateTagService;
 
     @Autowired
-    public CertificateController(GiftCertificateService giftCertificateService) {
+    public CertificateController(GiftCertificateService giftCertificateService, TagService tagService, CertificateTagService certificateTagService) {
         this.giftCertificateService = giftCertificateService;
+        this.tagService = tagService;
+        this.certificateTagService = certificateTagService;
     }
 
     @GetMapping
@@ -28,29 +33,45 @@ public class CertificateController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable("id") int id, Model model) {
-        model.addAttribute("certificate", giftCertificateService.getCertificateById(id));
+        GiftCertificate certificate = giftCertificateService.getCertificateById(id);
+        System.out.println(certificate.getTags());
+        model.addAttribute("certificate", certificate);
         return "certificates/show";
     }
 
     @GetMapping("/new")
-    public String newCertificate(@ModelAttribute("certificate") GiftCertificate giftCertificate) {
+    public String newCertificate(@ModelAttribute("certificate") GiftCertificate giftCertificate, Model model) {
+        model.addAttribute("tags", tagService.getAllTags());
         return "certificates/new";
     }
 
-    @GetMapping("/edit")
-    public String editCertificate(@ModelAttribute("certificate") GiftCertificate giftCertificate) {
+    @GetMapping("/{id}/edit")
+    public String edit(@PathVariable("id") int id, Model model) {
+        GiftCertificate certificate = giftCertificateService.getCertificateById(id);
+        model.addAttribute("certificate", certificate);
+        model.addAttribute("tags", tagService.getAllTags());
+        model.addAttribute("selectedTags", certificate.getTags());
         return "certificates/edit";
     }
 
     @PostMapping
-    public String create(@ModelAttribute("certificate") GiftCertificate giftCertificate){
-        giftCertificateService.insertCertificate(giftCertificate);
+    public String create(@ModelAttribute("certificate") GiftCertificate giftCertificate,
+                         @RequestParam("selected_tags") int[] tagIds){
+        giftCertificate = giftCertificateService.insertCertificate(giftCertificate);
+        Tag tag;
+        for (int tagId : tagIds) {
+            //todo process future exceptions
+            System.out.println(tagId);
+            tag = tagService.getTagById(tagId);
+            certificateTagService.insertCertificateTag(giftCertificate.getId(), tag.getId());
+        }
         return "redirect:/certificates";
     }
 
-    @PutMapping
-    public String edit(@ModelAttribute("certificate") GiftCertificate giftCertificate){
-        //todo implement
+    @PutMapping("/{id}")
+    public String update(@ModelAttribute("certificate") GiftCertificate giftCertificate,
+                         @PathVariable("id") int id){
+        giftCertificateService.updateCertificate(id, giftCertificate);
         return "redirect:/certificates";
     }
 
