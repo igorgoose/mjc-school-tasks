@@ -1,10 +1,7 @@
 package com.epam.esm.schepov.core.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class GiftCertificate implements Serializable {
@@ -17,17 +14,17 @@ public class GiftCertificate implements Serializable {
     private Date lastUpdateDate;
     private int duration;
 
-    private List<Tag> tags = new LinkedList<>();
+    private Set<Tag> tags = new HashSet<>();
 
     public GiftCertificate() {
 
     }
 
-    public List<Tag> getTags() {
+    public Set<Tag> getTags() {
         return tags;
     }
 
-    public void setTags(List<Tag> tags) {
+    public void setTags(Set<Tag> tags) {
         this.tags = tags;
     }
 
@@ -97,6 +94,8 @@ public class GiftCertificate implements Serializable {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

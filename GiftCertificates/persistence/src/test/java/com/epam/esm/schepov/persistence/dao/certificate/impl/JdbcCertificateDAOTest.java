@@ -26,7 +26,7 @@ class JdbcCertificateDAOTest {
 
     @Test
     public void getCertificateByIdTest(){
-        GiftCertificate certificate = certificateDAO.getCertificateById(1);
+        GiftCertificate certificate = certificateDAO.getById(1);
         assertTrue(certificate.getId() == 1 &&
                 certificate.getName().equals("parachute jump") &&
                 certificate.getPrice() == 50.0 &&
@@ -36,7 +36,7 @@ class JdbcCertificateDAOTest {
 
     @Test
     public void getCertificateByNameTest(){
-        GiftCertificate certificate = certificateDAO.getCertificateByName("parachute jump");
+        GiftCertificate certificate = certificateDAO.getByName("parachute jump");
         assertTrue(certificate.getId() == 1 &&
                 certificate.getName().equals("parachute jump") &&
                 certificate.getPrice() == 50.0 &&

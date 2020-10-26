@@ -22,12 +22,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     public Set<GiftCertificate> getAllCertificates() {
-        return certificateDAO.getAllCertificates();
+        return certificateDAO.getAll();
     }
 
     @Override
     public GiftCertificate getCertificateById(int id) {
-        return certificateDAO.getCertificateById(id);
+        return certificateDAO.getById(id);
     }
 
     @Override
@@ -36,18 +36,18 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         Date now = new Date();
         giftCertificate.setCreateDate(now);
         giftCertificate.setLastUpdateDate(now);
-        certificateDAO.insertCertificate(giftCertificate);
-        return certificateDAO.getCertificateByName(giftCertificate.getName());
+        certificateDAO.insert(giftCertificate);
+        return certificateDAO.getByName(giftCertificate.getName());
     }
 
     @Override
     public void deleteCertificate(int id) {
-        certificateDAO.deleteCertificate(id);
+        certificateDAO.delete(id);
     }
 
     @Override
     public void updateCertificate(int id, GiftCertificate giftCertificate) {
-        certificateDAO.updateCertificate(id, giftCertificate);
+        certificateDAO.update(id, giftCertificate);
     }
 
 }

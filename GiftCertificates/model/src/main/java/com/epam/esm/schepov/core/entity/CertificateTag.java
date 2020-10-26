@@ -13,10 +13,15 @@ public class CertificateTag implements Serializable {
 
     }
 
-    public CertificateTag(int id, int certificateId, int tag) {
+    public CertificateTag(int id, int certificateId, int tagId) {
         this.id = id;
         this.certificateId = certificateId;
-        this.tagId = tag;
+        this.tagId = tagId;
+    }
+
+    public CertificateTag(int certificateId, int tagId) {
+        this.certificateId = certificateId;
+        this.tagId = tagId;
     }
 
     public int getId() {
@@ -27,11 +32,11 @@ public class CertificateTag implements Serializable {
         this.id = id;
     }
 
-    public int getGiftCertificate() {
+    public int getCertificateId() {
         return certificateId;
     }
 
-    public void setGiftCertificate(int certificateId) {
+    public void setCertificateId(int certificateId) {
         this.certificateId = certificateId;
     }
 

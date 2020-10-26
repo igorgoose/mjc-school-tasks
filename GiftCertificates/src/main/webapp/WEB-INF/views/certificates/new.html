@@ -31,9 +31,6 @@
 
     <input type="submit" th:value="#{view.create}">
 </form>
-<ul>
-    <li th:each="tag : ${tags}" th:text="${tag.getName()}"></li>
-</ul>
 <a th:href="@{/}" th:text="Home"></a>
 </body>
 </html>

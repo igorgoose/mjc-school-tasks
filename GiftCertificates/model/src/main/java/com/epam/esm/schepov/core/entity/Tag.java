@@ -1,16 +1,14 @@
 package com.epam.esm.schepov.core.entity;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 public class Tag implements Serializable {
 
     private int id;
     private String name;
-    private List<GiftCertificate> giftCertificates = new LinkedList<>();
+    private Set<GiftCertificate> giftCertificates = new LinkedHashSet<>();
 
     public Tag() {
 
@@ -37,11 +35,11 @@ public class Tag implements Serializable {
         this.name = name;
     }
 
-    public List<GiftCertificate> getGiftCertificates() {
+    public Set<GiftCertificate> getGiftCertificates() {
         return giftCertificates;
     }
 
-    public void setGiftCertificates(List<GiftCertificate> giftCertificates) {
+    public void setGiftCertificates(Set<GiftCertificate> giftCertificates) {
         this.giftCertificates = giftCertificates;
     }
 

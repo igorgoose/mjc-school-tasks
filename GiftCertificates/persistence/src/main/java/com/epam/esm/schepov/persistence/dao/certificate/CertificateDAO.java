@@ -5,15 +5,15 @@ import com.epam.esm.schepov.core.entity.GiftCertificate;
 import java.util.Set;
 
 public interface CertificateDAO {
-    Set<GiftCertificate> getAllCertificates();
+    Set<GiftCertificate> getAll();
 
-    GiftCertificate getCertificateById(int id);
+    GiftCertificate getById(int id);
 
-    GiftCertificate getCertificateByName(String name);
+    GiftCertificate getByName(String name);
 
-    void insertCertificate(GiftCertificate giftCertificate);
+    void insert(GiftCertificate giftCertificate);
 
-    void deleteCertificate(int id);
+    void delete(int id);
 
-    void updateCertificate(int id, GiftCertificate giftCertificate);
+    void update(int id, GiftCertificate giftCertificate);
 }

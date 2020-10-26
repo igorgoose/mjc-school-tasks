@@ -21,22 +21,22 @@ public class TagServiceImpl implements TagService {
 
     @Override
     public Set<Tag> getAllTags() {
-        return tagDAO.getAllTags();
+        return tagDAO.getAll();
     }
 
     @Override
     public Tag getTagById(int id) {
-        return tagDAO.getTagById(id);
+        return tagDAO.getById(id);
     }
 
     @Override
     public void deleteTagById(int id) {
-        tagDAO.deleteTag(id);
+        tagDAO.delete(id);
     }
 
     @Override
     public void insertTag(Tag tag) {
-        tagDAO.insertTag(tag);
+        tagDAO.insert(tag);
     }
 
 }

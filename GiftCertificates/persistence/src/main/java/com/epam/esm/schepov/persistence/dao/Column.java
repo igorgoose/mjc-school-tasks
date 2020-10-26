@@ -8,10 +8,12 @@ public enum Column {
     CREATE_DATE("create_date"),
     LAST_UPDATE_DATE("last_update_date"),
     DURATION("duration"),
-    CERTIFICATE_ID("cs_id"),
-    CERTIFICATE_NAME("cs_name"),
-    TAG_ID("t_id"),
-    TAG_NAME("t_name");
+    CERTIFICATES_ID("cs_id"),
+    CERTIFICATES_NAME("cs_name"),
+    TAGS_ID("t_id"),
+    TAG_NAME("t_name"),
+    CERTIFICATE_ID("certificate_id"),
+    TAG_ID("tag_id");
 
 
     private final String name;

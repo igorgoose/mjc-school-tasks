@@ -28,13 +28,13 @@ class JdbcTagDAOTest {
     @Test
     public void getTagByIdTestPositive(){
         Tag tag = new Tag(1, "extreme");
-        assertEquals(tagDAO.getTagById(1), tag);
+        assertEquals(tagDAO.getById(1), tag);
     }
 
     @Test
     public void getTagByNameTestPositive(){
         Tag tag = new Tag(1, "extreme");
-        assertEquals(tagDAO.getTagByName("extreme"), tag);
+        assertEquals(tagDAO.getByName("extreme"), tag);
     }
 
 

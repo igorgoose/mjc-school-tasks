@@ -50,31 +50,31 @@ public class JdbcTagDAO implements TagDAO {
 
 
     @Override
-    public Set<Tag> getAllTags() {
+    public Set<Tag> getAll() {
         return jdbcOperations.query(GET_ALL_TAGS, this::mapResultSet);
     }
 
     @Override
-    public Tag getTagById(int id) {
+    public Tag getById(int id) {
         //todo create custom exceptions
         return jdbcOperations.query(GET_TAG_BY_ID, this::mapResultSet, id)
                 .stream().findAny().orElseThrow(() -> new RuntimeException("empty"));
     }
 
     @Override
-    public Tag getTagByName(String name) {
+    public Tag getByName(String name) {
         return jdbcOperations.query(GET_TAG_BY_NAME, this::mapResultSet, name)
                 .stream().findAny().orElseThrow(() -> new RuntimeException("empty"));
     }
 
     @Override
-    public void insertTag(Tag tag) {
+    public void insert(Tag tag) {
         //todo process name collision
         jdbcOperations.update(INSERT_TAG, tag.getName());
     }
 
     @Override
-    public void deleteTag(int id) {
+    public void delete(int id) {
         jdbcOperations.update(DELETE_TAG, id);
     }
 
@@ -95,10 +95,10 @@ public class JdbcTagDAO implements TagDAO {
 
     private Tag mapTag(ResultSet resultSet) throws SQLException {
         Tag tag = new Tag(resultSet.getInt(ID.getName()), resultSet.getString(NAME.getName()));
-        String certificateName = resultSet.getString(CERTIFICATE_NAME.getName());
+        String certificateName = resultSet.getString(CERTIFICATES_NAME.getName());
         if(certificateName != null) {
             tag.getGiftCertificates().add(new GiftCertificate(
-                    resultSet.getInt(CERTIFICATE_ID.getName()),
+                    resultSet.getInt(CERTIFICATES_ID.getName()),
                     certificateName,
                     resultSet.getString(DESCRIPTION.getName()),
                     resultSet.getFloat(PRICE.getName()),

@@ -10,6 +10,7 @@
     <thead>
     <tr>
         <th th:text="#{certificate.name}"></th>
+        <th th:text="#{certificate.description}"></th>
         <th th:text="#{certificate.price}"></th>
         <th th:text="#{certificate.creation_date}"></th>
         <th th:text="#{certificate.latest_update_date}"></th>
@@ -19,6 +20,7 @@
     <tbody>
     <tr>
         <td th:text="${certificate.getName()}"></td>
+        <td th:text="${certificate.getDescription()}"></td>
         <td th:text="${certificate.getPrice()}"></td>
         <td th:text="${{certificate.getCreateDate()}}"></td>
         <td th:text="${{certificate.getLastUpdateDate()}}"></td>

@@ -2,6 +2,7 @@ package com.epam.esm.schepov.persistence.dao.certificate.impl;
 
 import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.core.entity.Tag;
+import com.epam.esm.schepov.persistence.dao.Column;
 import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -51,7 +52,7 @@ public class JdbcCertificateDAO implements CertificateDAO {
 
     private static final String UPDATE_CERTIFICATE_QUERY =
             "update certificates " +
-                    "set name = ?, description = ?, price = ?, last_update_date = ?, duration = ?" +
+                    "set name = ?, description = ?, price = ?, last_update_date = ?, duration = ? " +
                     "where id = ?";
 
     private final JdbcOperations jdbcOperations;
@@ -63,25 +64,25 @@ public class JdbcCertificateDAO implements CertificateDAO {
 
 
     @Override
-    public Set<GiftCertificate> getAllCertificates() {
+    public Set<GiftCertificate> getAll() {
         return jdbcOperations.query(GET_ALL_CERTIFICATES_QUERY, this::mapResultSet);
     }
 
     @Override
-    public GiftCertificate getCertificateById(int id) {
+    public GiftCertificate getById(int id) {
         //todo create custom exceptions
         return jdbcOperations.query(GET_CERTIFICATE_BY_ID_QUERY, this::mapResultSet, id)
                 .stream().findAny().orElseThrow(() -> new RuntimeException("not found"));
     }
 
     @Override
-    public GiftCertificate getCertificateByName(String name) {
+    public GiftCertificate getByName(String name) {
         return jdbcOperations.query(GET_CERTIFICATE_BY_NAME_QUERY, this::mapResultSet, name)
                 .stream().findAny().orElseThrow(() -> new RuntimeException("not found"));
     }
 
     @Override
-    public void insertCertificate(GiftCertificate giftCertificate) {
+    public void insert(GiftCertificate giftCertificate) {
         jdbcOperations.update(INSERT_CERTIFICATE_QUERY,
                 giftCertificate.getName(),
                 giftCertificate.getDescription(),
@@ -92,12 +93,12 @@ public class JdbcCertificateDAO implements CertificateDAO {
     }
 
     @Override
-    public void deleteCertificate(int id) {
+    public void delete(int id) {
         jdbcOperations.update(DELETE_CERTIFICATE_QUERY, id);
     }
 
     @Override
-    public void updateCertificate(int id, GiftCertificate giftCertificate) {
+    public void update(int id, GiftCertificate giftCertificate) {
         jdbcOperations.update(UPDATE_CERTIFICATE_QUERY,
                 giftCertificate.getName(),
                 giftCertificate.getDescription(),
@@ -133,7 +134,7 @@ public class JdbcCertificateDAO implements CertificateDAO {
                 resultSet.getTimestamp(LAST_UPDATE_DATE.getName()),
                 resultSet.getInt(DURATION.getName())
         );
-        int tagId = resultSet.getInt(TAG_ID.getName());
+        int tagId = resultSet.getInt(Column.TAGS_ID.getName());
         String tagName = resultSet.getString(TAG_NAME.getName());
         if (tagName != null) {
             giftCertificate.getTags().add(new Tag(tagId, tagName));
