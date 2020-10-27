@@ -73,7 +73,7 @@ public class CertificateController {
                          @RequestParam("selected_tags") Integer[] tagIds,
                          @PathVariable("id") int id) {
         giftCertificateService.updateCertificate(id, giftCertificate);
-        certificateTagService.deleteByCertificateTag(id);
+        certificateTagService.deleteByCertificateId(id);
         for (int tagIdToAdd : tagIds) {
             certificateTagService.insertCertificateTag(new CertificateTag(id, tagIdToAdd));
         }

@@ -30,7 +30,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificate getCertificateById(int id) throws CertificateServiceException {
         GiftCertificate certificate = certificateDAO.getById(id);
         if (certificate == null) {
-            throw new CertificateServiceException("Queried certificate doesn't exist");
+            throw new CertificateServiceException("Queried certificate doesn't exist(id=" + id + ")");
         }
         return certificate;
     }
@@ -39,8 +39,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     public GiftCertificate insertCertificate(GiftCertificate giftCertificate) throws CertificateServiceException {
         GiftCertificate persistedCertificate = certificateDAO.getByName(giftCertificate.getName());
         if(persistedCertificate != null){
-            throw new CertificateServiceException("Certificate with name "
-                    + giftCertificate.getName() + " already exists");
+            throw new CertificateServiceException("Created certificate already exists(name="
+                    + giftCertificate.getName() + ")");
         }
         Date now = new Date();
         giftCertificate.setCreateDate(now);
@@ -50,12 +50,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public void deleteCertificate(int id) {
+    public void deleteCertificate(int id) throws CertificateServiceException {
+        getCertificateById(id);
         certificateDAO.delete(id);
     }
 
     @Override
-    public void updateCertificate(int id, GiftCertificate giftCertificate) {
+    public void updateCertificate(int id, GiftCertificate giftCertificate) throws CertificateServiceException {
+        getCertificateById(id);
         certificateDAO.update(id, giftCertificate);
     }
 

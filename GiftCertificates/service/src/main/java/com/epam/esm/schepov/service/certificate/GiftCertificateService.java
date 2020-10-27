@@ -16,7 +16,7 @@ public interface GiftCertificateService {
     GiftCertificate insertCertificate(GiftCertificate giftCertificate) throws CertificateServiceException;
 
 
-    void deleteCertificate(int id);
+    void deleteCertificate(int id) throws CertificateServiceException;
 
-    void updateCertificate(int id, GiftCertificate giftCertificate);
+    void updateCertificate(int id, GiftCertificate giftCertificate) throws CertificateServiceException;
 }
