@@ -1,14 +1,16 @@
 package com.epam.esm.schepov.controller;
 
 import com.epam.esm.schepov.core.entity.Tag;
+import com.epam.esm.schepov.service.exception.TagServiceException;
 import com.epam.esm.schepov.service.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
+
 @Controller
-@RequestMapping(value = "/tags", produces = {"text/html; charset=UTF-8"})
+@RequestMapping(value = "/tags")
 public class TagController {
 
     private final TagService tagService;
@@ -19,33 +21,41 @@ public class TagController {
     }
 
     @GetMapping
-    public String index(Model model){
-        model.addAttribute("tags", tagService.getAllTags());
-        return "tags/index";
+    public Set<Tag> all(){
+        return tagService.getAllTags();
     }
 
     @GetMapping("/{id}")
-    public String show(@PathVariable("id") int id, Model model){
-        model.addAttribute("tag", tagService.getTagById(id));
-        return "tags/show";
+    public Tag one(@PathVariable("id") int id){
+        try {
+            return tagService.getTagById(id);
+        } catch (TagServiceException e) {
+            throw new RuntimeException();
+        }
     }
 
-    @GetMapping("/new")
-    public String newTag(@ModelAttribute("tag") Tag tag){
-        return "tags/new";
-    }
+//    @GetMapping("/new")
+//    public String newTag(@ModelAttribute("tag") Tag tag){
+//        return "tags/new";
+//    }
 
     @PostMapping
-    public String create(@ModelAttribute("tag") Tag tag){
-        tagService.insertTag(tag);
-        return "redirect:/tags";
+    public void create(@RequestBody Tag tag){
+        try {
+            tagService.insertTag(tag);
+        } catch (TagServiceException e) {
+            e.printStackTrace();
+        }
     }
 
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") int id){
-        tagService.deleteTagById(id);
-        return "redirect:/tags";
+    public void delete(@PathVariable("id") int id){
+        try {
+            tagService.deleteTagById(id);
+        } catch (TagServiceException e) {
+            e.printStackTrace();
+        }
     }
 
 }
