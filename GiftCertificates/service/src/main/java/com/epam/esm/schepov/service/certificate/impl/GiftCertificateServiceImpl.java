@@ -3,6 +3,7 @@ package com.epam.esm.schepov.service.certificate.impl;
 import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
+import com.epam.esm.schepov.service.exception.CertificateServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,13 +27,21 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public GiftCertificate getCertificateById(int id) {
-        return certificateDAO.getById(id);
+    public GiftCertificate getCertificateById(int id) throws CertificateServiceException {
+        GiftCertificate certificate = certificateDAO.getById(id);
+        if (certificate == null) {
+            throw new CertificateServiceException("Queried certificate doesn't exist");
+        }
+        return certificate;
     }
 
     @Override
-    public GiftCertificate insertCertificate(GiftCertificate giftCertificate) {
-        //todo validation
+    public GiftCertificate insertCertificate(GiftCertificate giftCertificate) throws CertificateServiceException {
+        GiftCertificate persistedCertificate = certificateDAO.getByName(giftCertificate.getName());
+        if(persistedCertificate != null){
+            throw new CertificateServiceException("Certificate with name "
+                    + giftCertificate.getName() + " already exists");
+        }
         Date now = new Date();
         giftCertificate.setCreateDate(now);
         giftCertificate.setLastUpdateDate(now);

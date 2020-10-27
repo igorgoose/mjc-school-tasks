@@ -3,12 +3,17 @@ package com.epam.esm.schepov.persistence.dao.tag.impl;
 import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
+import com.epam.esm.schepov.persistence.exception.DaoException;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.epam.esm.schepov.persistence.dao.Column.*;
@@ -56,26 +61,32 @@ public class JdbcTagDAO implements TagDAO {
 
     @Override
     public Tag getById(int id) {
-        //todo create custom exceptions
-        return jdbcOperations.query(GET_TAG_BY_ID, this::mapResultSet, id)
-                .stream().findAny().orElseThrow(() -> new RuntimeException("empty"));
+        return Objects.requireNonNull(jdbcOperations.query(GET_TAG_BY_ID, this::mapResultSet, id))
+                .stream().findAny().orElse(null);
     }
 
     @Override
     public Tag getByName(String name) {
-        return jdbcOperations.query(GET_TAG_BY_NAME, this::mapResultSet, name)
-                .stream().findAny().orElseThrow(() -> new RuntimeException("empty"));
+        return Objects.requireNonNull(jdbcOperations.query(GET_TAG_BY_NAME, this::mapResultSet, name))
+                .stream().findAny().orElse(null);
     }
 
     @Override
-    public void insert(Tag tag) {
-        //todo process name collision
-        jdbcOperations.update(INSERT_TAG, tag.getName());
+    public void insert(Tag tag) throws DaoException {
+        try {
+            jdbcOperations.update(INSERT_TAG, tag.getName());
+        } catch (DuplicateKeyException exception) {
+            throw new DaoException("Tag with name " + tag.getName() + " already exists.", exception);
+        }
     }
 
     @Override
-    public void delete(int id) {
-        jdbcOperations.update(DELETE_TAG, id);
+    public void delete(int id) throws DaoException {
+        try {
+            jdbcOperations.update(DELETE_TAG, id);
+        } catch (DataAccessException exception) {
+            throw new DaoException("Can't delete tag with id = " + id, exception);
+        }
     }
 
     private Set<Tag> mapResultSet(ResultSet resultSet) throws SQLException {
@@ -96,7 +107,7 @@ public class JdbcTagDAO implements TagDAO {
     private Tag mapTag(ResultSet resultSet) throws SQLException {
         Tag tag = new Tag(resultSet.getInt(ID.getName()), resultSet.getString(NAME.getName()));
         String certificateName = resultSet.getString(CERTIFICATES_NAME.getName());
-        if(certificateName != null) {
+        if (certificateName != null) {
             tag.getGiftCertificates().add(new GiftCertificate(
                     resultSet.getInt(CERTIFICATES_ID.getName()),
                     certificateName,
@@ -109,7 +120,6 @@ public class JdbcTagDAO implements TagDAO {
         }
         return tag;
     }
-
 
 
 }

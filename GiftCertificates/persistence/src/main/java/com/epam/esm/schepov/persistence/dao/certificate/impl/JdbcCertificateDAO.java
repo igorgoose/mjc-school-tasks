@@ -4,7 +4,9 @@ import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.Column;
 import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
+import com.epam.esm.schepov.persistence.exception.DaoException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import static com.epam.esm.schepov.persistence.dao.Column.*;
@@ -70,42 +73,53 @@ public class JdbcCertificateDAO implements CertificateDAO {
 
     @Override
     public GiftCertificate getById(int id) {
-        //todo create custom exceptions
-        return jdbcOperations.query(GET_CERTIFICATE_BY_ID_QUERY, this::mapResultSet, id)
-                .stream().findAny().orElseThrow(() -> new RuntimeException("not found"));
+        return Objects.requireNonNull(jdbcOperations.query(GET_CERTIFICATE_BY_ID_QUERY, this::mapResultSet, id))
+                .stream().findAny().orElse(null);
     }
 
     @Override
     public GiftCertificate getByName(String name) {
-        return jdbcOperations.query(GET_CERTIFICATE_BY_NAME_QUERY, this::mapResultSet, name)
-                .stream().findAny().orElseThrow(() -> new RuntimeException("not found"));
+        return Objects.requireNonNull(jdbcOperations.query(GET_CERTIFICATE_BY_NAME_QUERY, this::mapResultSet, name))
+                .stream().findAny().orElse(null);
     }
 
     @Override
-    public void insert(GiftCertificate giftCertificate) {
-        jdbcOperations.update(INSERT_CERTIFICATE_QUERY,
-                giftCertificate.getName(),
-                giftCertificate.getDescription(),
-                giftCertificate.getPrice(),
-                giftCertificate.getCreateDate(),
-                giftCertificate.getLastUpdateDate(),
-                giftCertificate.getDuration());
+    public void insert(GiftCertificate giftCertificate) throws DaoException {
+        try {
+            jdbcOperations.update(INSERT_CERTIFICATE_QUERY,
+                    giftCertificate.getName(),
+                    giftCertificate.getDescription(),
+                    giftCertificate.getPrice(),
+                    giftCertificate.getCreateDate(),
+                    giftCertificate.getLastUpdateDate(),
+                    giftCertificate.getDuration());
+        } catch (DataAccessException exception) {
+            throw new DaoException("Certificate with name " + giftCertificate.getName() + " already exists", exception);
+        }
     }
 
     @Override
-    public void delete(int id) {
-        jdbcOperations.update(DELETE_CERTIFICATE_QUERY, id);
+    public void delete(int id) throws DaoException {
+        try {
+            jdbcOperations.update(DELETE_CERTIFICATE_QUERY, id);
+        } catch (DataAccessException exception) {
+            throw new DaoException("Can't delete certificate with id = " + id, exception);
+        }
     }
 
     @Override
-    public void update(int id, GiftCertificate giftCertificate) {
-        jdbcOperations.update(UPDATE_CERTIFICATE_QUERY,
-                giftCertificate.getName(),
-                giftCertificate.getDescription(),
-                giftCertificate.getPrice(),
-                new Date(),
-                giftCertificate.getDuration(),
-                id);
+    public void update(int id, GiftCertificate giftCertificate) throws DaoException {
+        try {
+            jdbcOperations.update(UPDATE_CERTIFICATE_QUERY,
+                    giftCertificate.getName(),
+                    giftCertificate.getDescription(),
+                    giftCertificate.getPrice(),
+                    new Date(),
+                    giftCertificate.getDuration(),
+                    id);
+        } catch (DataAccessException exception) {
+            throw new DaoException("Can't delete certificate with id = " + id, exception);
+        }
     }
 
     private Set<GiftCertificate> mapResultSet(ResultSet resultSet) throws SQLException {
