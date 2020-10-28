@@ -42,10 +42,11 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void insertTag(Tag tag) throws TagServiceException {
+    public Tag insertTag(Tag tag) throws TagServiceException {
         Tag persistedTag = tagDAO.getByName(tag.getName());
         if (persistedTag == null) {
             tagDAO.insert(tag);
+            return tagDAO.getByName(tag.getName());
         } else {
             throw new TagServiceException("Tag with name " + tag.getName() + " already exists.");
         }

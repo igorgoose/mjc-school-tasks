@@ -5,7 +5,6 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 
 public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
     @Override
@@ -23,12 +22,12 @@ public class DispatcherServletInitializer extends AbstractAnnotationConfigDispat
         return new String[]{"/"};
     }
 
-    @Override
-    public void onStartup(ServletContext aServletContext) throws ServletException {
-        super.onStartup(aServletContext);
-        registerHiddenFieldFilter(aServletContext);
-        registerCharacterEncodingFilter(aServletContext);
-    }
+//    @Override
+//    public void onStartup(ServletContext aServletContext) throws ServletException {
+//        super.onStartup(aServletContext);
+//        registerHiddenFieldFilter(aServletContext);
+//        registerCharacterEncodingFilter(aServletContext);
+//    }
 
     private void registerHiddenFieldFilter(ServletContext aContext) {
         aContext.addFilter("hiddenHttpMethodFilter",

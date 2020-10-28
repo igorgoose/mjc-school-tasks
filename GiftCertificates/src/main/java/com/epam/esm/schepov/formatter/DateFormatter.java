@@ -1,21 +1,17 @@
 package com.epam.esm.schepov.formatter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.Formatter;
 
-import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class DateFormatter implements Formatter<Date> {
 
     private final MessageSource messageSource;
 
-    @Autowired
     public DateFormatter(MessageSource messageSource) {
         this.messageSource = messageSource;
     }

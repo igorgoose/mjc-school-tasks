@@ -8,6 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import javax.sql.DataSource;
+import javax.swing.*;
 
 @Configuration
 @PropertySource("classpath:database.properties")
@@ -34,12 +35,12 @@ public class DataSourceConfig {
     @Bean
     public DataSource dataSource() {
         BasicDataSource dataSource = new BasicDataSource();
-        dataSource.setDriverClassName(driverClass);
-        dataSource.setUrl(url);
-        dataSource.setUsername(username);
-        dataSource.setPassword(password);
-        dataSource.setInitialSize(Integer.parseInt(initialSize));
-        dataSource.setMaxTotal(Integer.parseInt(maxTotal));
+        dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/gift_certificates");
+        dataSource.setUsername("root");
+        dataSource.setPassword("1234");
+        dataSource.setInitialSize(5);
+        dataSource.setMaxTotal(10);
         return dataSource;
     }
 

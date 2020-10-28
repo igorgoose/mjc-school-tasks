@@ -12,6 +12,6 @@ public interface TagService {
 
     void deleteTagById(int id) throws TagServiceException;
 
-    void insertTag(Tag tag) throws TagServiceException;
+    Tag insertTag(Tag tag) throws TagServiceException;
 
 }

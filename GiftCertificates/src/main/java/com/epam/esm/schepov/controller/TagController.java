@@ -1,23 +1,29 @@
 package com.epam.esm.schepov.controller;
 
 import com.epam.esm.schepov.core.entity.Tag;
+import com.epam.esm.schepov.error.Error;
+import com.epam.esm.schepov.error.ErrorCodeCreator;
 import com.epam.esm.schepov.service.exception.TagServiceException;
 import com.epam.esm.schepov.service.tag.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
 
 @Controller
-@RequestMapping(value = "/tags")
+@RequestMapping(value = "/tags", produces = "application/json")
 public class TagController {
 
     private final TagService tagService;
+    private final ErrorCodeCreator errorCodeCreator;
 
     @Autowired
-    public TagController(TagService tagService) {
+    public TagController(TagService tagService, ErrorCodeCreator errorCodeCreator) {
         this.tagService = tagService;
+        this.errorCodeCreator = errorCodeCreator;
     }
 
     @GetMapping
@@ -26,30 +32,28 @@ public class TagController {
     }
 
     @GetMapping("/{id}")
-    public Tag one(@PathVariable("id") int id){
+    public ResponseEntity<?> one(@PathVariable("id") int id){
         try {
-            return tagService.getTagById(id);
+            Tag tag = tagService.getTagById(id);
+            return new ResponseEntity<>(tag, HttpStatus.OK);
         } catch (TagServiceException e) {
-            throw new RuntimeException();
+            return new ResponseEntity<>(new Error(e.getMessage(), errorCodeCreator.createErrorCode(404, id)),
+                    HttpStatus.NOT_FOUND);
         }
     }
 
-//    @GetMapping("/new")
-//    public String newTag(@ModelAttribute("tag") Tag tag){
-//        return "tags/new";
-//    }
-
-    @PostMapping
-    public void create(@RequestBody Tag tag){
+    @PostMapping(consumes = "application/json")
+    public ResponseEntity<?> create(@RequestBody Tag tag){
         try {
-            tagService.insertTag(tag);
+            return new ResponseEntity<>(tagService.insertTag(tag), HttpStatus.OK);
         } catch (TagServiceException e) {
-            e.printStackTrace();
+            return new ResponseEntity<>(new Error(e.getMessage(), 409),
+                    HttpStatus.CONFLICT);
         }
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping(value = "/{id}", consumes = "application/json")
     public void delete(@PathVariable("id") int id){
         try {
             tagService.deleteTagById(id);
