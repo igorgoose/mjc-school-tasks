@@ -2,6 +2,7 @@ package com.epam.esm.schepov.service.tag.impl;
 
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
+import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 import com.epam.esm.schepov.service.tag.TagService;
@@ -36,8 +37,10 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public void deleteTagById(int id) throws ResourceNotFoundServiceException {
-        getTagById(id);
+    public void deleteTagById(int id) throws InvalidRequestDataServiceException {
+        if (null == tagDAO.getById(id)) {
+            throw new InvalidRequestDataServiceException("Queried tag doesn't exist(id=" + id + ")");
+        }
         tagDAO.delete(id);
     }
 

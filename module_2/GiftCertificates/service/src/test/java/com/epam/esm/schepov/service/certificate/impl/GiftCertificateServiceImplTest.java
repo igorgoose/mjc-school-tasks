@@ -8,6 +8,7 @@ import com.epam.esm.schepov.persistence.dao.certificatetag.CertificateTagDAO;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
 import com.epam.esm.schepov.persistence.exception.DaoException;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
+import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 import org.junit.jupiter.api.BeforeAll;
@@ -161,7 +162,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     void deleteCertificateInvalidId() {
-        assertThrows(ResourceNotFoundServiceException.class, () -> giftCertificateService.deleteCertificate(3));
+        assertThrows(InvalidRequestDataServiceException.class, () -> giftCertificateService.deleteCertificate(3));
     }
 
     @Test
@@ -171,7 +172,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     void updateCertificateInvalidId() {
-        assertThrows(ResourceNotFoundServiceException.class, () ->
+        assertThrows(InvalidRequestDataServiceException.class, () ->
                 giftCertificateService.updateCertificate(3,
                         new GiftCertificate(0, "3", "3", 3, new Date(), new Date(), 3)));
     }

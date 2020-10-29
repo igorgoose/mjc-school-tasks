@@ -7,7 +7,8 @@ import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
 import com.epam.esm.schepov.persistence.dao.certificatetag.CertificateTagDAO;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
-import com.epam.esm.schepov.service.exception.InvalidDataServiceException;
+import com.epam.esm.schepov.service.exception.InvalidEntityDataServiceException;
+import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional
     public GiftCertificate insertCertificate(GiftCertificate giftCertificate)
-            throws ResourceConflictServiceException, InvalidDataServiceException {
+            throws ResourceConflictServiceException, InvalidEntityDataServiceException {
         GiftCertificate persistedCertificate = certificateDAO.getByName(giftCertificate.getName());
         if (persistedCertificate != null) {
-            throw new ResourceConflictServiceException("Created certificate already exists(name="
-                    + giftCertificate.getName() + ")");
+            throw new ResourceConflictServiceException("Certificate with name '" + giftCertificate.getName()
+                    + "' already exists.");
         }
         Date now = new Date();
         giftCertificate.setCreateDate(now);
@@ -69,23 +70,26 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public void deleteCertificate(int id) throws ResourceNotFoundServiceException {
-        getCertificateById(id);
+    public void deleteCertificate(int id) throws InvalidRequestDataServiceException {
+        if (null == certificateDAO.getById(id)) {
+            throw new InvalidRequestDataServiceException("Trying to delete non-existent certificate(id=" + id + ")");
+        }
         certificateDAO.delete(id);
     }
 
     @Override
     @Transactional
     public GiftCertificate updateCertificate(int id, GiftCertificate giftCertificate)
-            throws ResourceNotFoundServiceException {
+            throws InvalidRequestDataServiceException, ResourceConflictServiceException,
+            InvalidEntityDataServiceException {
         GiftCertificate persistedCertificate = certificateDAO.getByName(giftCertificate.getName());
         if (persistedCertificate != null && persistedCertificate.getId() != id) {
             throw new ResourceConflictServiceException("GiftCertificate with name "
                     + giftCertificate.getName() + " already exists.");
         }
-        persistedCertificate = getCertificateById(id);
+        persistedCertificate = certificateDAO.getById(id);
         if (persistedCertificate == null) {
-            throw new ResourceNotFoundServiceException("Queried certificate doesn't exist(id=" + id + ")");
+            throw new InvalidRequestDataServiceException("Trying to update non-existent certificate(id=" + id + ")");
         }
         certificateTagDAO.deleteByCertificateId(id);
         for (Tag tagToAdd : giftCertificate.getTags()) {
@@ -96,11 +100,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return certificateDAO.getById(id);
     }
 
-    private Tag ensureTagExists(Tag tag) throws InvalidDataServiceException {
+    private Tag ensureTagExists(Tag tag) throws InvalidEntityDataServiceException {
         Tag persistedTag = tagDAO.getById(tag.getId());
         if (persistedTag != null) {
             return persistedTag;
         }
-        throw new InvalidDataServiceException("Invalid tag id(" + tag.getId() + ")");
+        throw new InvalidEntityDataServiceException("Invalid tag id(" + tag.getId() + ")");
     }
 }

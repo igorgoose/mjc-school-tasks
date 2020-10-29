@@ -3,6 +3,7 @@ package com.epam.esm.schepov.service.tag.impl;
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
 import com.epam.esm.schepov.persistence.exception.DaoException;
+import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 import com.epam.esm.schepov.service.tag.TagService;
@@ -76,7 +77,7 @@ class TagServiceImplTest {
 
     @Test
     void deleteTagByIdInvalidId() {
-        Assertions.assertThrows(ResourceNotFoundServiceException.class, () -> tagService.deleteTagById(3));
+        Assertions.assertThrows(InvalidRequestDataServiceException.class, () -> tagService.deleteTagById(3));
     }
 
     @Test

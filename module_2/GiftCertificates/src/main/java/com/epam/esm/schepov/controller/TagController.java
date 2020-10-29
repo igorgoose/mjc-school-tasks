@@ -3,6 +3,7 @@ package com.epam.esm.schepov.controller;
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.error.Error;
 import com.epam.esm.schepov.error.ErrorCodeCreator;
+import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 import com.epam.esm.schepov.service.tag.TagService;
@@ -74,6 +75,13 @@ public class TagController {
     @ResponseBody
     public Error resourceConflict(ResourceConflictServiceException exception){
         return new Error(41, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidRequestDataServiceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Error resourceConflict(InvalidRequestDataServiceException exception){
+        return new Error(40, exception.getMessage());
     }
 
 }

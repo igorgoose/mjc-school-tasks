@@ -19,7 +19,5 @@ dependencies {
     compile group: 'org.springframework', name: 'spring-context', version: '5.2.9.RELEASE'
 
     compile group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.11.3'
-
-
-
+    
 }

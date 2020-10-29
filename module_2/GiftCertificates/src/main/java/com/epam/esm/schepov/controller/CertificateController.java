@@ -3,7 +3,8 @@ package com.epam.esm.schepov.controller;
 import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.error.Error;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
-import com.epam.esm.schepov.service.exception.InvalidDataServiceException;
+import com.epam.esm.schepov.service.exception.InvalidEntityDataServiceException;
+import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,7 +76,7 @@ public class CertificateController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     public Error resourceNotFound(ResourceNotFoundServiceException exception){
-        return new Error(40, exception.getMessage());
+        return new Error(44, exception.getMessage());
     }
 
     @ExceptionHandler(ResourceConflictServiceException.class)
@@ -85,11 +86,18 @@ public class CertificateController {
         return new Error(41, exception.getMessage());
     }
 
-    @ExceptionHandler(InvalidDataServiceException.class)
+    @ExceptionHandler(InvalidEntityDataServiceException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    public Error invalidData(InvalidDataServiceException exception){
+    public Error invalidData(InvalidEntityDataServiceException exception){
         return new Error(42, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidRequestDataServiceException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseBody
+    public Error invalidData(InvalidRequestDataServiceException exception){
+        return new Error(40, exception.getMessage());
     }
 
 }

@@ -1,7 +1,8 @@
 package com.epam.esm.schepov.service.certificate;
 
 import com.epam.esm.schepov.core.entity.GiftCertificate;
-import com.epam.esm.schepov.service.exception.InvalidDataServiceException;
+import com.epam.esm.schepov.service.exception.InvalidEntityDataServiceException;
+import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 
@@ -16,12 +17,13 @@ public interface GiftCertificateService {
 
 
     GiftCertificate insertCertificate(GiftCertificate giftCertificate)
-            throws ResourceConflictServiceException, InvalidDataServiceException;
+            throws ResourceConflictServiceException, InvalidEntityDataServiceException;
 
     GiftCertificate updateCertificate(int id, GiftCertificate giftCertificate)
-            throws ResourceNotFoundServiceException, InvalidDataServiceException;
+            throws InvalidRequestDataServiceException, InvalidEntityDataServiceException,
+            ResourceConflictServiceException;
 
-    void deleteCertificate(int id) throws ResourceNotFoundServiceException;
+    void deleteCertificate(int id) throws InvalidRequestDataServiceException;
 
 
 }
