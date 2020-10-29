@@ -8,8 +8,12 @@ import java.util.Set;
 
 public interface TagDAO {
     Set<Tag> getAll();
+
     Tag getById(int id);
+
     Tag getByName(String name);
+
     void insert(Tag tag) throws DaoException;
+
     void delete(int id) throws DaoException;
 }

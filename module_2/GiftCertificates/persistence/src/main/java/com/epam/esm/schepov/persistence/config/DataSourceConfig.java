@@ -10,14 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import javax.sql.DataSource;
 
 @Configuration
-@PropertySource("classpath:database.properties")
 public class DataSourceConfig {
-
-    private final Environment env;
-
-    public DataSourceConfig(Environment env) {
-        this.env = env;
-    }
 
     @Bean
     public DataSource dataSource() {

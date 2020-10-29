@@ -10,10 +10,9 @@ repositories {
 }
 
 dependencies {
-    // https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-api
+
     testCompile group: 'org.junit.jupiter', name: 'junit-jupiter', version: '5.7.0'
 
-    // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testCompile group: 'org.mockito', name: 'mockito-core', version: '3.5.15'
 
     compile project(':persistence')

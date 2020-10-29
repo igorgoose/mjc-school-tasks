@@ -5,7 +5,6 @@ import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
 import com.epam.esm.schepov.persistence.exception.DaoException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
-import com.epam.esm.schepov.service.exception.TagServiceException;
 import com.epam.esm.schepov.service.tag.TagService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -19,21 +18,14 @@ class TagServiceImplTest {
 
 
     private static TagService tagService;
-    private static final Tag tag1;
-    private static final Tag tag2;
-    private static final Set<Tag> allTags;
-
-    static {
-        tag1 = new Tag(1, "name1");
-        tag2 = new Tag(2, "name2");
-        allTags = new LinkedHashSet<>();
-        allTags.add(tag1);
-        allTags.add(tag2);
-    }
+    private static final Tag tag1 = new Tag(1, "name1");;
+    private static final Tag tag2 = new Tag(2, "name2");;
+    private static Set<Tag> allTags;
 
     @BeforeAll
     static void setUp() {
         TagDAO tagDAO = Mockito.mock(TagDAO.class);
+        allTags = new LinkedHashSet<>();
         allTags.add(tag1);
         allTags.add(tag2);
         Mockito.when(tagDAO.getAll()).thenReturn(allTags);

@@ -1,12 +1,18 @@
 package com.epam.esm.schepov.service.certificate.impl;
 
+import com.epam.esm.schepov.core.entity.CertificateTag;
 import com.epam.esm.schepov.core.entity.GiftCertificate;
+import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
+import com.epam.esm.schepov.persistence.dao.certificatetag.CertificateTagDAO;
+import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
+import com.epam.esm.schepov.service.exception.InvalidDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.Set;
@@ -15,10 +21,15 @@ import java.util.Set;
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     private final CertificateDAO certificateDAO;
+    private final TagDAO tagDAO;
+    private final CertificateTagDAO certificateTagDAO;
 
     @Autowired
-    public GiftCertificateServiceImpl(CertificateDAO certificateDAO) {
+    public GiftCertificateServiceImpl(CertificateDAO certificateDAO, TagDAO tagDAO,
+                                      CertificateTagDAO certificateTagDAO) {
         this.certificateDAO = certificateDAO;
+        this.tagDAO = tagDAO;
+        this.certificateTagDAO = certificateTagDAO;
     }
 
 
@@ -37,9 +48,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public GiftCertificate insertCertificate(GiftCertificate giftCertificate) throws ResourceConflictServiceException {
+    @Transactional
+    public GiftCertificate insertCertificate(GiftCertificate giftCertificate)
+            throws ResourceConflictServiceException, InvalidDataServiceException {
         GiftCertificate persistedCertificate = certificateDAO.getByName(giftCertificate.getName());
-        if(persistedCertificate != null){
+        if (persistedCertificate != null) {
             throw new ResourceConflictServiceException("Created certificate already exists(name="
                     + giftCertificate.getName() + ")");
         }
@@ -47,6 +60,11 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         giftCertificate.setCreateDate(now);
         giftCertificate.setLastUpdateDate(now);
         certificateDAO.insert(giftCertificate);
+        int newCertificateId = certificateDAO.getByName(giftCertificate.getName()).getId();
+        for (Tag tag : giftCertificate.getTags()) {
+            Tag persistedTag = ensureTagExists(tag);
+            certificateTagDAO.insert(new CertificateTag(newCertificateId, persistedTag.getId()));
+        }
         return certificateDAO.getByName(giftCertificate.getName());
     }
 
@@ -57,20 +75,32 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
+    @Transactional
     public GiftCertificate updateCertificate(int id, GiftCertificate giftCertificate)
             throws ResourceNotFoundServiceException {
         GiftCertificate persistedCertificate = certificateDAO.getByName(giftCertificate.getName());
-        if(persistedCertificate != null && persistedCertificate.getId() != id){
+        if (persistedCertificate != null && persistedCertificate.getId() != id) {
             throw new ResourceConflictServiceException("GiftCertificate with name "
                     + giftCertificate.getName() + " already exists.");
         }
         persistedCertificate = getCertificateById(id);
-        if(persistedCertificate == null){
+        if (persistedCertificate == null) {
             throw new ResourceNotFoundServiceException("Queried certificate doesn't exist(id=" + id + ")");
         }
+        certificateTagDAO.deleteByCertificateId(id);
+        for (Tag tagToAdd : giftCertificate.getTags()) {
+            Tag persistedTag = ensureTagExists(tagToAdd);
+            certificateTagDAO.insert(new CertificateTag(id, persistedTag.getId()));
+        }
         certificateDAO.update(id, giftCertificate);
-        giftCertificate.setId(id);
-        return giftCertificate;
+        return certificateDAO.getById(id);
     }
 
+    private Tag ensureTagExists(Tag tag) throws InvalidDataServiceException {
+        Tag persistedTag = tagDAO.getById(tag.getId());
+        if (persistedTag != null) {
+            return persistedTag;
+        }
+        throw new InvalidDataServiceException("Invalid tag id(" + tag.getId() + ")");
+    }
 }
