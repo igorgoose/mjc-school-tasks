@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'com.epam.esm.schepov'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 repositories {
     mavenCentral()
@@ -23,9 +23,14 @@ dependencies {
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
 
-    compile project(":service")
+    implementation project(":service")
 }
 
 war {
     archiveFileName = 'GiftCertificates.war'
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
 }
