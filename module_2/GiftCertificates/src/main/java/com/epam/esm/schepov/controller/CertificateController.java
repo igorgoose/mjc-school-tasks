@@ -4,6 +4,7 @@ import com.epam.esm.schepov.core.entity.CertificateTag;
 import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.error.Error;
+import com.epam.esm.schepov.exception.InvalidDataException;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
 import com.epam.esm.schepov.service.certificatetag.CertificateTagService;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
@@ -55,8 +56,8 @@ public class CertificateController {
                                                   UriComponentsBuilder uriComponentsBuilder) {
         giftCertificate = giftCertificateService.insertCertificate(giftCertificate);
         for (Tag tag : giftCertificate.getTags()) {
-            tag = tagService.getTagById(tag.getId());
-            certificateTagService.insertCertificateTag(new CertificateTag(giftCertificate.getId(), tag.getId()));
+            Tag persistedTag = ensureTagExists(tag);
+            certificateTagService.insertCertificateTag(new CertificateTag(giftCertificate.getId(), persistedTag.getId()));
         }
         URI locationUri = uriComponentsBuilder
                 .path("/certificates/")
@@ -75,7 +76,8 @@ public class CertificateController {
         GiftCertificate updatedCertificate = giftCertificateService.updateCertificate(id, giftCertificate);
         certificateTagService.deleteByCertificateId(id);
         for (Tag tagToAdd : giftCertificate.getTags()) {
-            certificateTagService.insertCertificateTag(new CertificateTag(id, tagToAdd.getId()));
+            Tag persistedTag = ensureTagExists(tagToAdd);
+            certificateTagService.insertCertificateTag(new CertificateTag(id, persistedTag.getId()));
         }
         return updatedCertificate;
     }
@@ -94,11 +96,18 @@ public class CertificateController {
         return new Error(40, exception.getMessage());
     }
 
-    @ExceptionHandler(ResourceConflictServiceException.class)
+    @ExceptionHandler({ResourceConflictServiceException.class, InvalidDataException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
     public Error resourceConflict(ResourceConflictServiceException exception){
         return new Error(41, exception.getMessage());
     }
 
+    private Tag ensureTagExists(Tag tag) throws InvalidDataException {
+        try {
+            return tagService.getTagById(tag.getId());
+        } catch (ResourceNotFoundServiceException exception) {
+            throw new InvalidDataException("Invalid tag id(" + tag.getId() + ")");
+        }
+    }
 }
