@@ -51,7 +51,7 @@ public class TagServiceImpl implements TagService {
             tagDAO.insert(tag);
             return tagDAO.getByName(tag.getName());
         } else {
-            throw new ResourceConflictServiceException("Tag with name " + tag.getName() + " already exists.");
+            throw new ResourceConflictServiceException("Tag with name '" + tag.getName() + "' already exists.");
         }
     }
 

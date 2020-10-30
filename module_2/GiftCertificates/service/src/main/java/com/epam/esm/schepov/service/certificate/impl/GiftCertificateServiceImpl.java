@@ -84,8 +84,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             InvalidEntityDataServiceException {
         GiftCertificate persistedCertificate = certificateDAO.getByName(giftCertificate.getName());
         if (persistedCertificate != null && persistedCertificate.getId() != id) {
-            throw new ResourceConflictServiceException("GiftCertificate with name "
-                    + giftCertificate.getName() + " already exists.");
+            throw new ResourceConflictServiceException("GiftCertificate with name '"
+                    + giftCertificate.getName() + "' already exists.");
         }
         persistedCertificate = certificateDAO.getById(id);
         if (persistedCertificate == null) {
