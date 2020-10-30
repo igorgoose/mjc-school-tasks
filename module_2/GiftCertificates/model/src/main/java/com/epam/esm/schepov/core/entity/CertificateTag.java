@@ -9,7 +9,7 @@ public class CertificateTag implements Serializable {
     private int certificateId;
     private int tagId;
 
-    public CertificateTag(){
+    public CertificateTag() {
 
     }
 

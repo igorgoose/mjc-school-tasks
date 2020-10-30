@@ -21,12 +21,12 @@ import java.util.Set;
 /**
  * The {@code CertificateController} class is an endpoint of the API
  * which allows its users to perform CRUD operations on gift certificates.
- *
+ * <p>
  * {@code CertificateController} is accessed by sending request to GiftCertificates/certificates
  * and the response produced by {@code CertificateController} carries application/json
  * type of content(except for {@link #delete} method, which send no content back to the user).
  * This information can be found in {@link RequestMapping} annotation's parameters.
- *
+ * <p>
  * As mentioned before, {@code CertificateController} provides the user with methods to create({@link #create}),
  * read({@link #getAll} and {@link #getOne}), update({@link #update}) and delete({@link #delete})
  * gift certificates from storage. This means that any type of request except
@@ -34,9 +34,8 @@ import java.util.Set;
  * Not Allowed.
  *
  * @author Igor Schepov
- * @see  TagController
+ * @see TagController
  * @since 1.0
- *
  */
 @RestController
 @RequestMapping(value = "/certificates", produces = "application/json")
@@ -52,7 +51,7 @@ public class CertificateController {
 
     /**
      * Returns all the gift certificates in the storage.
-     *
+     * <p>
      * Annotated by {@link GetMapping} with no parameters. Therefore, processes GET requests at
      * GiftCertificates/certificates.
      *
@@ -67,11 +66,11 @@ public class CertificateController {
 
     /**
      * Returns the gift certificate with the specified from the storage.
-     *
+     * <p>
      * Annotated by {@link GetMapping} with parameter value = "/{id}". Therefore, processes GET requests at
      * GiftCertificates/certificates/_id_, where _id_ is the identifier of the requested gift certificate
      * represented by a natural number.
-     *
+     * <p>
      * If there is no gift certificate with the specified id response gets status 404 - Not Found.
      * The default response status is 200 - OK.
      *
@@ -87,17 +86,17 @@ public class CertificateController {
 
     /**
      * Inserts the gift certificate passed in the request body into the storage.
-     *
+     * <p>
      * Annotated with{@link PostMapping} with parameter consumes = "application/json",
      * which implies that the method processes POST requests at GiftCertificates/certificates and that the
      * information about the new gift certificate must be carried in request body
      * in JSON format.
-     *
+     * <p>
      * The default response status is 200 - OK.
      * In case the name of the new gift certificate collides with a stored gift certificate's name response status is
      * 422 - Unprocessable Entity.
      *
-     * @param giftCertificate Gift certificate to be inserted into storage. Inferred from the request body.
+     * @param giftCertificate      Gift certificate to be inserted into storage. Inferred from the request body.
      * @param uriComponentsBuilder Builder for the URI of the created gift certificate.
      * @return {@link ResponseEntity} with the inserted gift certificate and its location included.
      */
@@ -119,13 +118,13 @@ public class CertificateController {
 
     /**
      * Updates the gift certificate in the storage using {@code giftCertificate} passed as a parameter.
-     *
+     * <p>
      * Annotated with{@link PutMapping} with parameter consumes = "application/json",
      * which implies that the method processes PUT requests at GiftCertificates/certificates/_id_, where
      * _id_ is the identifier of the certificate to be updated represented by a natural number and that the
      * information about the updated gift certificate must be carried in request body
      * in JSON format.
-     *
+     * <p>
      * The default response status is 200 - OK.
      * In case the name of the updated gift certificate collides with a stored gift certificate's name
      * response status is 422 - Unprocessable Entity.
@@ -133,7 +132,7 @@ public class CertificateController {
      * is 422 - Unprocessable Entity.
      *
      * @param giftCertificate Updated value of the gift certificate.
-     * @param id The identifier of the gift certificate to be updated. Inferred from the request URI.
+     * @param id              The identifier of the gift certificate to be updated. Inferred from the request URI.
      * @return Updated gift certificate.
      */
     @PutMapping(value = "/{id}", consumes = "application/json")
@@ -145,12 +144,12 @@ public class CertificateController {
 
     /**
      * Deletes the gift certificate with the specified id from the storage.
-     *
+     * <p>
      * Annotated with{@link DeleteMapping} with parameter value = "/{id}",
      * which implies that the method processes DELETE requests at
      * GiftCertificates/certificates/_id_, where _id_ is the identifier of the gift certificate to be deleted
      * represented by a natural number.
-     *
+     * <p>
      * The default response status is 204 - No Content, as the response body is empty.
      * In case there is no gift certificate with the specified id in the storage response status
      * is 400 - Bad Request.
@@ -166,28 +165,28 @@ public class CertificateController {
     @ExceptionHandler(ResourceNotFoundServiceException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    private Error resourceNotFound(ResourceNotFoundServiceException exception){
+    private Error resourceNotFound(ResourceNotFoundServiceException exception) {
         return new Error(44, exception.getMessage());
     }
 
     @ExceptionHandler(ResourceConflictServiceException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    private Error resourceConflict(ResourceConflictServiceException exception){
+    private Error resourceConflict(ResourceConflictServiceException exception) {
         return new Error(41, exception.getMessage());
     }
 
     @ExceptionHandler(InvalidEntityDataServiceException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    private Error invalidEntityData(InvalidEntityDataServiceException exception){
+    private Error invalidEntityData(InvalidEntityDataServiceException exception) {
         return new Error(42, exception.getMessage());
     }
 
     @ExceptionHandler(InvalidRequestDataServiceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    private Error invalidRequestData(InvalidRequestDataServiceException exception){
+    private Error invalidRequestData(InvalidRequestDataServiceException exception) {
         return new Error(40, exception.getMessage());
     }
 

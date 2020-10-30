@@ -20,12 +20,12 @@ import java.util.Set;
 /**
  * The {@code TagController} class is an endpoint of the API
  * which allows its users to perform CRD operations on tags.
- *
+ * <p>
  * {@code TagController} is accessed by sending request to GiftCertificates/tags
  * and the response produced by {@code TagController} carries application/json
  * type of content(except for {@link #delete} method, which send no content back to the user).
  * This information can be found in {@link RequestMapping} annotation's parameters.
- *
+ * <p>
  * As mentioned before, {@code TagController} provides the user with methods to create({@link #create}),
  * read({@link #getAll} and {@link #getOne}) and delete({@link #delete}) tags from storage. This means that
  * any type of request except for GET, POST, DELETE will by default result in a response with
@@ -34,7 +34,6 @@ import java.util.Set;
  * @author Igor Schepov
  * @see CertificateController
  * @since 1.0
- *
  */
 @Controller
 @RequestMapping(value = "/tags", produces = "application/json")
@@ -50,7 +49,7 @@ public class TagController {
 
     /**
      * Returns all the tags in the storage.
-     *
+     * <p>
      * Annotated by {@link GetMapping} with no parameters. Therefore, processes GET requests at
      * GiftCertificates/tags.
      *
@@ -65,11 +64,11 @@ public class TagController {
 
     /**
      * Returns the tag with the specified id from the storage.
-     *
+     * <p>
      * Annotated by {@link GetMapping} with parameter value = "/{id}". Therefore, processes GET requests at
      * GiftCertificates/tags/_id_, where _id_ is the identifier of the requested tag represented by a
      * natural number.
-     *
+     * <p>
      * If there is no tag with the specified id response gets status 404 - Not Found.
      * The default response status is 200 - OK.
      *
@@ -85,17 +84,17 @@ public class TagController {
 
     /**
      * Inserts the tag passed in the request body into the storage.
-     *
+     * <p>
      * Annotated with{@link PostMapping} with parameter consumes = "application/json",
      * which implies that the method processes POST requests at GiftCertificates/tags and that the
      * information about the new tag must be carried in request body
      * in JSON format.
-     *
+     * <p>
      * The default response status is 200 - OK.
      * In case the name of the new tag collides with a stored tag's name response status is
      * 422 - Unprocessable Entity.
      *
-     * @param tag Tag to be inserted into storage. Inferred from the request body.
+     * @param tag                  Tag to be inserted into storage. Inferred from the request body.
      * @param uriComponentsBuilder Builder for the URI of the created tag.
      * @return {@link ResponseEntity} with the inserted tag and its location included.
      */
@@ -116,12 +115,12 @@ public class TagController {
 
     /**
      * Deletes the tag with the specified id from the storage.
-     *
+     * <p>
      * Annotated with{@link DeleteMapping} with parameter value = "/{id}",
      * which implies that the method processes DELETE requests at
      * GiftCertificates/tags/_id_, where _id_ is the identifier of the tag to be deleted
      * represented by a natural number.
-     *
+     * <p>
      * The default response status is 204 - No Content, as the response body is empty.
      * In case there is no tag with the specified id in the storage response status
      * is 400 - Bad Request.
@@ -137,21 +136,21 @@ public class TagController {
     @ExceptionHandler(ResourceNotFoundServiceException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
-    private Error resourceNotFound(ResourceNotFoundServiceException exception){
+    private Error resourceNotFound(ResourceNotFoundServiceException exception) {
         return new Error(40, exception.getMessage());
     }
 
     @ExceptionHandler(ResourceConflictServiceException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     @ResponseBody
-    private Error resourceConflict(ResourceConflictServiceException exception){
+    private Error resourceConflict(ResourceConflictServiceException exception) {
         return new Error(41, exception.getMessage());
     }
 
     @ExceptionHandler(InvalidRequestDataServiceException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ResponseBody
-    private Error invalidRequestData(InvalidRequestDataServiceException exception){
+    private Error invalidRequestData(InvalidRequestDataServiceException exception) {
         return new Error(40, exception.getMessage());
     }
 

@@ -14,10 +14,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class CertificateTagServiceImplTest {
 
     private static CertificateTagService certificateTagService;
-    private static final CertificateTag certificateTag1 = new CertificateTag(1, 1,1);
+    private static final CertificateTag certificateTag1 = new CertificateTag(1, 1, 1);
 
     @BeforeAll
-    static void setUp(){
+    static void setUp() {
         CertificateTagDAO certificateTagDAO = Mockito.mock(CertificateTagDAO.class);
 
         Mockito.when(certificateTagDAO.getById(1)).thenReturn(certificateTag1);

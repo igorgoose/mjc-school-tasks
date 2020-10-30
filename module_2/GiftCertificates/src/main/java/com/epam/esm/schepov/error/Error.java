@@ -1,13 +1,12 @@
 package com.epam.esm.schepov.error;
 
 /**
- *  The {@code Error} class is used to send error messages to the user
- *  in a convenient way. Includes a {@link String} containing the error message
- *  and the error code.
+ * The {@code Error} class is used to send error messages to the user
+ * in a convenient way. Includes a {@link String} containing the error message
+ * and the error code.
  *
  * @author Igor Schepov
  * @since 1.0
- *
  */
 public class Error {
 
@@ -17,7 +16,7 @@ public class Error {
     /**
      * Initializes the {@code Error} with the error message and code.
      *
-     * @param errorCode The error code.
+     * @param errorCode    The error code.
      * @param errorMessage The error message.
      */
     public Error(int errorCode, String errorMessage) {

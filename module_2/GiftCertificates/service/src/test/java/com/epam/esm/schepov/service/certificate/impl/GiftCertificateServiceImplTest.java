@@ -36,11 +36,11 @@ class GiftCertificateServiceImplTest {
     private static final Tag tag1 = new Tag(1, "name1");
     private static final Tag tag2 = new Tag(2, "name2");
 
-    private static final CertificateTag certificateTag1 = new CertificateTag(1, 1,1);
+    private static final CertificateTag certificateTag1 = new CertificateTag(1, 1, 1);
 
 
     @BeforeAll
-    static void setUp(){
+    static void setUp() {
         giftCertificateService = new GiftCertificateServiceImpl(setUpCertificateDAO(),
                 setUpTagDAO(), setUpCertificateTagDAO());
     }
@@ -106,7 +106,7 @@ class GiftCertificateServiceImplTest {
         return certificateDAO;
     }
 
-    private static TagDAO setUpTagDAO(){
+    private static TagDAO setUpTagDAO() {
         TagDAO tagDAO = Mockito.mock(TagDAO.class);
         Set<Tag> allTags = new LinkedHashSet<>();
         allTags.add(tag1);
