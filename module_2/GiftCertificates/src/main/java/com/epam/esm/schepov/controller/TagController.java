@@ -2,6 +2,7 @@ package com.epam.esm.schepov.controller;
 
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.error.Error;
+import com.epam.esm.schepov.service.exception.InvalidEntityDataServiceException;
 import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
 import com.epam.esm.schepov.service.exception.ResourceNotFoundServiceException;
@@ -65,7 +66,7 @@ public class TagController {
     /**
      * Returns the tag with the specified id from the storage.
      * <p>
-     * Annotated by {@link GetMapping} with parameter value = "/{id}". Therefore, processes GET requests at
+     * Annotated with {@link GetMapping} with parameter value = "/{id}". Therefore, processes GET requests at
      * GiftCertificates/tags/_id_, where _id_ is the identifier of the requested tag represented by a
      * natural number.
      * <p>
@@ -85,7 +86,7 @@ public class TagController {
     /**
      * Inserts the tag passed in the request body into the storage.
      * <p>
-     * Annotated with{@link PostMapping} with parameter consumes = "application/json",
+     * Annotated with {@link PostMapping} with parameter consumes = "application/json",
      * which implies that the method processes POST requests at GiftCertificates/tags and that the
      * information about the new tag must be carried in request body
      * in JSON format.
@@ -116,7 +117,7 @@ public class TagController {
     /**
      * Deletes the tag with the specified id from the storage.
      * <p>
-     * Annotated with{@link DeleteMapping} with parameter value = "/{id}",
+     * Annotated with {@link DeleteMapping} with parameter value = "/{id}",
      * which implies that the method processes DELETE requests at
      * GiftCertificates/tags/_id_, where _id_ is the identifier of the tag to be deleted
      * represented by a natural number.
@@ -137,7 +138,7 @@ public class TagController {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ResponseBody
     private Error resourceNotFound(ResourceNotFoundServiceException exception) {
-        return new Error(40, exception.getMessage());
+        return new Error(44, exception.getMessage());
     }
 
     @ExceptionHandler(ResourceConflictServiceException.class)
@@ -152,6 +153,13 @@ public class TagController {
     @ResponseBody
     private Error invalidRequestData(InvalidRequestDataServiceException exception) {
         return new Error(40, exception.getMessage());
+    }
+
+    @ExceptionHandler(InvalidEntityDataServiceException.class)
+    @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
+    @ResponseBody
+    private Error invalidEntityData(InvalidEntityDataServiceException exception) {
+        return new Error(42, exception.getMessage());
     }
 
 }
