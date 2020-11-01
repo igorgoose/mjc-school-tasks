@@ -6,6 +6,7 @@ import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
 import com.epam.esm.schepov.persistence.dao.certificatetag.CertificateTagDAO;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
+import com.epam.esm.schepov.persistence.sort.CertificateSortParameter;
 import com.epam.esm.schepov.service.certificate.GiftCertificateService;
 import com.epam.esm.schepov.service.exception.InvalidEntityDataServiceException;
 import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 
@@ -24,6 +26,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final CertificateDAO certificateDAO;
     private final TagDAO tagDAO;
     private final CertificateTagDAO certificateTagDAO;
+    private static final String DESCENDING_ORDER = "desc";
 
     @Autowired
     public GiftCertificateServiceImpl(CertificateDAO certificateDAO, TagDAO tagDAO,
@@ -35,7 +38,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
 
     @Override
-    public Set<GiftCertificate> getAllCertificates() {
+    public Set<GiftCertificate> getAllCertificates(String sortParameter, String orderParameter) {
+        CertificateSortParameter parameter = Arrays.stream(CertificateSortParameter.values())
+                .filter((certificateSortParameter ->
+                        certificateSortParameter.getName().equals(sortParameter)))
+                .findAny().orElse(null);
+        boolean inDescendingOrder = DESCENDING_ORDER.equals(orderParameter);
+        if (parameter != null){
+            return certificateDAO.getAll(parameter, inDescendingOrder);
+        }
         return certificateDAO.getAll();
     }
 

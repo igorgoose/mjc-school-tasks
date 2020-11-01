@@ -6,6 +6,7 @@ import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
 import com.epam.esm.schepov.persistence.dao.certificatetag.CertificateTagDAO;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
+import com.epam.esm.schepov.persistence.sort.TagSortParameter;
 import com.epam.esm.schepov.service.exception.InvalidEntityDataServiceException;
 import com.epam.esm.schepov.service.exception.InvalidRequestDataServiceException;
 import com.epam.esm.schepov.service.exception.ResourceConflictServiceException;
@@ -15,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.Set;
 
 @Service
@@ -23,6 +25,7 @@ public class TagServiceImpl implements TagService {
     private final TagDAO tagDAO;
     private final CertificateDAO certificateDAO;
     private final CertificateTagDAO certificateTagDAO;
+    private static final String DESCENDING_ORDER = "desc";
 
     @Autowired
     public TagServiceImpl(TagDAO tagDAO, CertificateDAO certificateDAO, CertificateTagDAO certificateTagDAO) {
@@ -33,7 +36,15 @@ public class TagServiceImpl implements TagService {
 
 
     @Override
-    public Set<Tag> getAllTags() {
+    public Set<Tag> getAllTags(String sortParameter, String orderParameter) {
+        TagSortParameter parameter = Arrays.stream(TagSortParameter.values())
+                .filter((certificateSortParameter ->
+                        certificateSortParameter.getName().equals(sortParameter)))
+                .findAny().orElse(null);
+        boolean inDescendingOrder = DESCENDING_ORDER.equals(orderParameter);
+        if (parameter != null){
+            return tagDAO.getAll(parameter, inDescendingOrder);
+        }
         return tagDAO.getAll();
     }
 

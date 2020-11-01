@@ -59,8 +59,9 @@ public class TagController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Set<Tag> getAll() {
-        return tagService.getAllTags();
+    public Set<Tag> getAll(@RequestParam(value = "sort", required = false) String sortParameter,
+                           @RequestParam(value = "order", required = false) String orderParameter) {
+        return tagService.getAllTags(sortParameter, orderParameter);
     }
 
     /**

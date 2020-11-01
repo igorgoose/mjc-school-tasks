@@ -2,11 +2,14 @@ package com.epam.esm.schepov.persistence.dao.certificate;
 
 import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.persistence.exception.DaoException;
+import com.epam.esm.schepov.persistence.sort.CertificateSortParameter;
 
 import java.util.Set;
 
 public interface CertificateDAO {
     Set<GiftCertificate> getAll();
+
+    Set<GiftCertificate> getAll(CertificateSortParameter sortParameter, boolean inDescendingOrder);
 
     GiftCertificate getById(int id);
 
