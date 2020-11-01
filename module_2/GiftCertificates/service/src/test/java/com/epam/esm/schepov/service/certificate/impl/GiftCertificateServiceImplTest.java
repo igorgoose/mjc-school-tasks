@@ -136,7 +136,7 @@ class GiftCertificateServiceImplTest {
 
     @Test
     void getAllCertificatesPositive() {
-        assertEquals(giftCertificateSet, giftCertificateService.getAllCertificates());
+        assertEquals(giftCertificateSet, giftCertificateService.getAllCertificates(null, null));
     }
 
     @Test

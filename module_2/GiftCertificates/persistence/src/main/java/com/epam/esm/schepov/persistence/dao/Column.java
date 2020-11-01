@@ -12,8 +12,7 @@ public enum Column {
     CERTIFICATES_NAME("cs_name"),
     TAGS_ID("t_id"),
     TAG_NAME("t_name"),
-    CERTIFICATE_ID("certificate_id"),
-    TAG_ID("tag_id");
+    CERTIFICATE_ID("certificate_id");
 
 
     private final String name;

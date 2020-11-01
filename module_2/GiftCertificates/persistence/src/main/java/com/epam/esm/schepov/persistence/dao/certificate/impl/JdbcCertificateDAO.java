@@ -5,6 +5,7 @@ import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.Column;
 import com.epam.esm.schepov.persistence.dao.certificate.CertificateDAO;
 import com.epam.esm.schepov.persistence.exception.DaoException;
+import com.epam.esm.schepov.persistence.sort.CertificateSortParameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcOperations;
@@ -69,6 +70,12 @@ public class JdbcCertificateDAO implements CertificateDAO {
     @Override
     public Set<GiftCertificate> getAll() {
         return jdbcOperations.query(GET_ALL_CERTIFICATES_QUERY, this::mapResultSet);
+    }
+
+    @Override
+    public Set<GiftCertificate> getAll(CertificateSortParameter sortParameter, boolean inDescendingOrder) {
+        return jdbcOperations.query(GET_ALL_CERTIFICATES_QUERY + sortParameter.getSortParameter(inDescendingOrder),
+                this::mapResultSet);
     }
 
     @Override

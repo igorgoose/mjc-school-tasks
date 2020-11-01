@@ -60,8 +60,9 @@ public class CertificateController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Set<GiftCertificate> getAll() {
-        return giftCertificateService.getAllCertificates();
+    public Set<GiftCertificate> getAll(@RequestParam(value = "sort", required = false) String sortParameter,
+                                       @RequestParam(value = "order", required = false) String orderParameter) {
+        return giftCertificateService.getAllCertificates(sortParameter, orderParameter);
     }
 
     /**

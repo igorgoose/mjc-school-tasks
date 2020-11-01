@@ -10,7 +10,7 @@ import java.util.Set;
 
 public interface GiftCertificateService {
 
-    Set<GiftCertificate> getAllCertificates();
+    Set<GiftCertificate> getAllCertificates(String sortParameter, String orderParameter);
 
 
     GiftCertificate getCertificateById(int id) throws ResourceNotFoundServiceException;

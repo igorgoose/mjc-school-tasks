@@ -69,7 +69,7 @@ class TagServiceImplTest {
         giftCertificateSet.add(giftCertificate1);
         giftCertificateSet.add(giftCertificate2);
 
-        Mockito.when(certificateDAO.getAll()).thenReturn(giftCertificateSet);
+        Mockito.when(certificateDAO.getAll(Mockito.any(), Mockito.anyBoolean())).thenReturn(giftCertificateSet);
 
         Mockito.when(certificateDAO.getById(1)).thenReturn(giftCertificate1);
         Mockito.when(certificateDAO.getById(2)).thenReturn(giftCertificate2);
@@ -152,7 +152,7 @@ class TagServiceImplTest {
 
     @Test
     void getAllTagsTest() {
-        Assertions.assertEquals(allTags, tagService.getAllTags());
+        Assertions.assertEquals(allTags, tagService.getAllTags(null, null));
     }
 
     @Test

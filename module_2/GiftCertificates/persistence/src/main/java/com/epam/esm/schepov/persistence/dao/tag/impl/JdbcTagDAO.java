@@ -4,11 +4,12 @@ import com.epam.esm.schepov.core.entity.GiftCertificate;
 import com.epam.esm.schepov.core.entity.Tag;
 import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
 import com.epam.esm.schepov.persistence.exception.DaoException;
+import com.epam.esm.schepov.persistence.sort.TagSortParameter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.stereotype.Repository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
+import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -57,6 +58,12 @@ public class JdbcTagDAO implements TagDAO {
     @Override
     public Set<Tag> getAll() {
         return jdbcOperations.query(GET_ALL_TAGS, this::mapResultSet);
+    }
+
+    @Override
+    public Set<Tag> getAll(TagSortParameter sortParameter, boolean inDescendingOrder) {
+        return jdbcOperations.query(GET_ALL_TAGS + sortParameter.getSortParameter(inDescendingOrder),
+                this::mapResultSet);
     }
 
     @Override
