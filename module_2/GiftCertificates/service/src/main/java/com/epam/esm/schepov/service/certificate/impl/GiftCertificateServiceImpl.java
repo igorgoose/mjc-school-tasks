@@ -44,7 +44,7 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
                         certificateSortParameter.getName().equals(sortParameter)))
                 .findAny().orElse(null);
         boolean inDescendingOrder = DESCENDING_ORDER.equals(orderParameter);
-        if (parameter != null){
+        if (parameter != null) {
             return certificateDAO.getAll(parameter, inDescendingOrder);
         }
         return certificateDAO.getAll();

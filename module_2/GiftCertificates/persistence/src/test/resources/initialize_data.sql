@@ -1,7 +1,11 @@
-insert into tags values (1, 'extreme');
-insert into tags values (2, 'sport');
-insert into tags values (3, 'spa');
-insert into tags values (4, 'relax');
+insert into tags
+values (1, 'extreme');
+insert into tags
+values (2, 'sport');
+insert into tags
+values (3, 'spa');
+insert into tags
+values (4, 'relax');
 
 insert into certificates
 values (1, 'parachute jump', null, 50.00, current_timestamp(), current_timestamp(), 7);

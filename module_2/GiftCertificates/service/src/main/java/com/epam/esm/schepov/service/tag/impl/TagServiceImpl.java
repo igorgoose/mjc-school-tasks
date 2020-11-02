@@ -42,7 +42,7 @@ public class TagServiceImpl implements TagService {
                         certificateSortParameter.getName().equals(sortParameter)))
                 .findAny().orElse(null);
         boolean inDescendingOrder = DESCENDING_ORDER.equals(orderParameter);
-        if (parameter != null){
+        if (parameter != null) {
             return tagDAO.getAll(parameter, inDescendingOrder);
         }
         return tagDAO.getAll();
@@ -74,14 +74,14 @@ public class TagServiceImpl implements TagService {
         }
         tagDAO.insert(tag);
         int newTagId = tagDAO.getByName(tag.getName()).getId();
-        for (GiftCertificate certificate : tag.getGiftCertificates()){
+        for (GiftCertificate certificate : tag.getGiftCertificates()) {
             GiftCertificate persistedCertificate = ensureGiftCertificateExists(certificate);
             certificateTagDAO.insert(new CertificateTag(persistedCertificate.getId(), newTagId));
         }
         return tagDAO.getByName(tag.getName());
     }
 
-    private GiftCertificate ensureGiftCertificateExists(GiftCertificate giftCertificate){
+    private GiftCertificate ensureGiftCertificateExists(GiftCertificate giftCertificate) {
         GiftCertificate persistedCertificate = certificateDAO.getById(giftCertificate.getId());
         if (persistedCertificate != null) {
             return persistedCertificate;
