@@ -9,7 +9,7 @@ create table tags(
 
 create table certificates(
 	id int primary key auto_increment,
-    name varchar(100) not null,
+    name varchar(100) not null unique,
     description varchar(255),
     price decimal(10, 2),
     create_date timestamp,

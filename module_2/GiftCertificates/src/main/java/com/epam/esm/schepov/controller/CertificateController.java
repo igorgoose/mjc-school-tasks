@@ -54,7 +54,21 @@ public class CertificateController {
      * <p>
      * Annotated by {@link GetMapping} with no parameters. Therefore, processes GET requests at
      * GiftCertificates/certificates.
+     * <p>
+     * Accepts optional request parameters {@code sortParameter} and {@code orderParameter}. The names
+     * of the parameters in the request URI must be {@code sort} and {@code order} respectively.
+     * <p>
+     * The first one might contain one the following values:
+     * {@code name, price, create_date, last_update_date, duration}.
+     * Otherwise the requested certificates will not be sorted.
+     * <p>
+     * The second one might contain one the following values:
+     * {@code desc}.
+     * Otherwise the requested certificated will be sorted in ascending order(provided you passed
+     * {@code sort} parameter).
      *
+     * @param orderParameter Order in which certificates are sorted.
+     * @param sortParameter  The parameter used to order certificates.
      * @return All gift certificates in the storage.
      */
     @GetMapping

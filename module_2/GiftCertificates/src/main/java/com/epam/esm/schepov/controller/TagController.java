@@ -53,7 +53,21 @@ public class TagController {
      * <p>
      * Annotated by {@link GetMapping} with no parameters. Therefore, processes GET requests at
      * GiftCertificates/tags.
+     * <p>
+     * Accepts optional request parameters {@code sortParameter} and {@code orderParameter}. The names
+     * of the parameters in the request URI must be {@code sort} and {@code order} respectively.
+     * <p>
+     * The first one might contain one the following values:
+     * {@code name}.
+     * Otherwise the requested tags will not be sorted.
+     * <p>
+     * The second one might contain one the following values:
+     * {@code desc}.
+     * Otherwise the requested tags will be sorted in ascending order(provided you passed
+     * {@code sort} parameter).
      *
+     * @param orderParameter Order in which tags are sorted.
+     * @param sortParameter  The parameter used to order tags.
      * @return All tags in the storage.
      */
     @GetMapping
