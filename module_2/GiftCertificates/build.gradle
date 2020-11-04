@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'com.epam.esm.schepov'
+version '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+    testCompile group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0'
+
+    compile group: 'org.springframework', name: 'spring-webmvc', version: '5.2.9.RELEASE'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.3'
+
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.11.3'
+
+    providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
+
+
+    implementation project(":service")
+}
+
+war {
+    archiveFileName = 'GiftCertificates.war'
+}
+
+javadoc {
+    source = sourceSets.main.allJava
+    classpath = configurations.compile
+}
