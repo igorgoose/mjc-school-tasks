@@ -20,6 +20,18 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Set;
 
+/**
+ * Provides functionality to process and validate data passed from an endpoint
+ * and to send queries to DAO layer.
+ *
+ * @author Igor Schepov
+ * @see GiftCertificateService
+ * @see CertificateTagDAO
+ * @see TagDAO
+ * @see CertificateDAO
+ * @see GiftCertificate
+ * @since 1.0
+ */
 @Service
 public class GiftCertificateServiceImpl implements GiftCertificateService {
 
@@ -28,6 +40,14 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final CertificateTagDAO certificateTagDAO;
     private static final String DESCENDING_ORDER = "desc";
 
+    /**
+     * Injects objects of classes implementing {@link CertificateDAO}, {@link TagDAO} and
+     * {@link CertificateTagDAO} used to communicate with the database.
+     *
+     * @param certificateDAO    Certificate Data Access Object.
+     * @param tagDAO            Tag Data Access Object.
+     * @param certificateTagDAO CertificateTag Data Access Object.
+     */
     @Autowired
     public GiftCertificateServiceImpl(CertificateDAO certificateDAO, TagDAO tagDAO,
                                       CertificateTagDAO certificateTagDAO) {
@@ -36,7 +56,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         this.certificateTagDAO = certificateTagDAO;
     }
 
-
+    /**
+     * Retrieves all certificates stored.
+     *
+     * @param sortParameter  Certificate's property by which the queried certificates are sorted.
+     * @param orderParameter Order of the queried certificates(ascending or descending).
+     * @return All certificates stored.
+     */
     @Override
     public Set<GiftCertificate> getAllCertificates(String sortParameter, String orderParameter) {
         CertificateSortParameter parameter = Arrays.stream(CertificateSortParameter.values())
@@ -50,6 +76,13 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return certificateDAO.getAll();
     }
 
+    /**
+     * Retrieves the certificate with the specified id.
+     *
+     * @param id The identifier of the queried certificate.
+     * @return The certificate with the specified id.
+     * @throws ResourceNotFoundServiceException If the queried certificate does not exist.
+     */
     @Override
     public GiftCertificate getCertificateById(int id) throws ResourceNotFoundServiceException {
         GiftCertificate certificate = certificateDAO.getById(id);
@@ -59,6 +92,18 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return certificate;
     }
 
+    /**
+     * Inserts the passed certificate.
+     * <p>
+     * The method is {@link Transactional}, so it does not violates database integrity.
+     *
+     * @param giftCertificate The certificate to insert.
+     * @return The new certificate from storage.
+     * @throws ResourceConflictServiceException  If there's a conflict between passed
+     *                                           and persisted certificates
+     * @throws InvalidEntityDataServiceException If there's an invalid property value
+     *                                           inside the passed certificate.
+     */
     @Override
     @Transactional
     public GiftCertificate insertCertificate(GiftCertificate giftCertificate)
@@ -80,6 +125,12 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         return certificateDAO.getByName(giftCertificate.getName());
     }
 
+    /**
+     * Deletes the certificate with the specified id from the storage.
+     *
+     * @param id The id of the certificate to delete.
+     * @throws InvalidRequestDataServiceException If the id is invalid.
+     */
     @Override
     public void deleteCertificate(int id) throws InvalidRequestDataServiceException {
         if (null == certificateDAO.getById(id)) {
@@ -88,6 +139,21 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         certificateDAO.delete(id);
     }
 
+    /**
+     * Updates the stored certificate with the specified id using the
+     * certificate passed as a parameter.
+     * <p>
+     * The method is {@link Transactional}, so it does not violates database integrity.
+     *
+     * @param id              The id of the stored certificate to update.
+     * @param giftCertificate The updated certificate value.
+     * @return The updated certificate from the storage.
+     * @throws InvalidRequestDataServiceException If the id is invalid.
+     * @throws InvalidEntityDataServiceException  If there's an invalid property value
+     *                                            inside the passed certificate.
+     * @throws ResourceConflictServiceException   If there's a conflict between passed
+     *                                            and persisted certificates
+     */
     @Override
     @Transactional
     public GiftCertificate updateCertificate(int id, GiftCertificate giftCertificate)

@@ -3,11 +3,18 @@ plugins {
     id 'war'
 }
 
-group 'com.epam.esm.schepov'
-version '1.0'
+allprojects{
+    repositories{
+        mavenCentral()
+    }
+    group 'com.epam.esm.schepov'
+    version '1.0'
+}
 
-repositories {
-    mavenCentral()
+subprojects {
+    test{
+        useJUnitPlatform()
+    }
 }
 
 dependencies {
@@ -23,7 +30,7 @@ dependencies {
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version: '4.0.1'
 
 
-    implementation project(":service")
+    compile project(":service")
 }
 
 war {

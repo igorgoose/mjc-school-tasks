@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -35,15 +34,20 @@ import java.util.Set;
  *
  * @author Igor Schepov
  * @see TagController
+ * @see GiftCertificateService
  * @since 1.0
  */
 @RestController
 @RequestMapping(value = "/certificates", produces = "application/json")
-@Transactional
 public class CertificateController {
 
     private final GiftCertificateService giftCertificateService;
 
+    /**
+     * Injects an object of a class implementing {@link GiftCertificateService}.
+     *
+     * @param giftCertificateService An object of a class implementing {@link GiftCertificateService}.
+     */
     @Autowired
     public CertificateController(GiftCertificateService giftCertificateService) {
         this.giftCertificateService = giftCertificateService;

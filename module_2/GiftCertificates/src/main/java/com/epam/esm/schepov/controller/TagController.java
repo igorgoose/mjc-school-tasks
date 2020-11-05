@@ -34,6 +34,7 @@ import java.util.Set;
  *
  * @author Igor Schepov
  * @see CertificateController
+ * @see TagService
  * @since 1.0
  */
 @Controller
@@ -42,7 +43,11 @@ public class TagController {
 
     private final TagService tagService;
 
-
+    /**
+     * Injects an object of a class implementing {@link TagService}.
+     *
+     * @param tagService An object of a class implementing {@link TagService}.
+     */
     @Autowired
     public TagController(TagService tagService) {
         this.tagService = tagService;

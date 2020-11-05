@@ -6,7 +6,6 @@ import com.epam.esm.schepov.persistence.dao.tag.TagDAO;
 import com.epam.esm.schepov.persistence.exception.DaoException;
 import com.epam.esm.schepov.persistence.sort.TagSortParameter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Repository;
@@ -19,7 +18,17 @@ import java.util.Set;
 
 import static com.epam.esm.schepov.persistence.dao.Column.*;
 
-
+/**
+ * {@code JdbcTagDAO} provides methods to interact with a database
+ * and perform CRD operations on tags. The class utilizes a {@link JdbcOperations}
+ * object, hence the name.
+ *
+ * @author Igor Schepov
+ * @see Tag
+ * @see TagDAO
+ * @see TagSortParameter
+ * @since 1.0
+ */
 @Repository
 public class JdbcTagDAO implements TagDAO {
 
@@ -49,35 +58,79 @@ public class JdbcTagDAO implements TagDAO {
 
     private final JdbcOperations jdbcOperations;
 
+    /**
+     * Injects a {@code JdbcOperations} object which is used to interact with the database.
+     *
+     * @param jdbcOperations A JdbcOperations object to interact with the database.
+     */
     @Autowired
     public JdbcTagDAO(JdbcOperations jdbcOperations) {
         this.jdbcOperations = jdbcOperations;
     }
 
 
+    /**
+     * Returns all the tags stored.
+     *
+     * @return All tags from the storage.
+     */
     @Override
     public Set<Tag> getAll() {
         return jdbcOperations.query(GET_ALL_TAGS, this::mapResultSet);
     }
 
+    /**
+     * Returns all the tags stored in order described by {@code sortParameter}
+     * and {@code inDescendingOrder}.
+     * <p>
+     * The parameter {@code sortParameter} represents a property of tags, by which
+     * the returned tags are ordered.
+     * <p>
+     * If the parameter {@code inDescendingOrder} is true, the order of the returned tags
+     * is descending.
+     *
+     * @param sortParameter     A property of tags, by which
+     *                          the returned tags are ordered.
+     * @param inDescendingOrder If true the order of the returned tags
+     *                          is descending.
+     * @return All tags from the storage ordered according to the parameters passed.
+     */
     @Override
     public Set<Tag> getAll(TagSortParameter sortParameter, boolean inDescendingOrder) {
         return jdbcOperations.query(GET_ALL_TAGS + sortParameter.getSortParameter(inDescendingOrder),
                 this::mapResultSet);
     }
 
+    /**
+     * Returns the tag with identifier equal to {@code id} passed as a parameter.
+     *
+     * @param id The identifier of the requested tag.
+     * @return The tag with the specified identifier.
+     */
     @Override
     public Tag getById(int id) {
         return Objects.requireNonNull(jdbcOperations.query(GET_TAG_BY_ID, this::mapResultSet, id))
                 .stream().findAny().orElse(null);
     }
 
+    /**
+     * Returns the tag with name equal to {@code name} passed as a parameter.
+     *
+     * @param name The name of the requested tag.
+     * @return The tag with the specified name.
+     */
     @Override
     public Tag getByName(String name) {
         return Objects.requireNonNull(jdbcOperations.query(GET_TAG_BY_NAME, this::mapResultSet, name))
                 .stream().findAny().orElse(null);
     }
 
+    /**
+     * Inserts the passed {@code tag}.
+     *
+     * @param tag The certificate to insert.
+     * @throws DaoException Thrown in case of invalid {@code tag}'s properties.
+     */
     @Override
     public void insert(Tag tag) throws DaoException {
         try {
@@ -87,13 +140,14 @@ public class JdbcTagDAO implements TagDAO {
         }
     }
 
+    /**
+     * Deletes the tag with the specified {@code id};
+     *
+     * @param id The identifier of the tag to be deleted.
+     */
     @Override
     public void delete(int id) throws DaoException {
-        try {
-            jdbcOperations.update(DELETE_TAG, id);
-        } catch (DataAccessException exception) {
-            throw new DaoException("Can't delete tag with id = " + id, exception);
-        }
+        jdbcOperations.update(DELETE_TAG, id);
     }
 
     private Set<Tag> mapResultSet(ResultSet resultSet) throws SQLException {
